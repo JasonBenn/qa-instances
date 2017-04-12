@@ -7,18 +7,15 @@
 var PULLS = /.*:\/\/github.com\/minervaproject\/.*\/pulls/
 var PULL = /.*:\/\/github.com\/minervaproject\/.*\/pull\/.*/
 
-chrome.webNavigation.onHistoryStateUpdated.addListener(function(details) {
+chrome.webNavigation.onHistoryStateUpdated.addListener(_.throttle(function(details) {
   if (PULLS.test(details.url)) {
-    console.log("MATCHES PULLS!");
     chrome.tabs.executeScript(details.tabId, { file: "src/inject/pulls.js" });
     chrome.tabs.insertCSS(details.tabId, { file: "src/inject/pulls.css" });
   } else if (PULL.test(details.url)) {
-    console.log("MATCHES PULL!");
     chrome.tabs.executeScript(details.tabId, { file: "src/inject/pull.js" });
     chrome.tabs.insertCSS(details.tabId, { file: "src/inject/pull.css" });
   }
-  console.log(details);
-});
+}, 3000));
 
 //example of using a message handler from the inject scripts
 // chrome.extension.onMessage.addListener(
