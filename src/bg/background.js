@@ -9,10 +9,14 @@ var PULL = /.*:\/\/github.com\/minervaproject\/.*\/pull\/.*/
 
 chrome.webNavigation.onHistoryStateUpdated.addListener(_.throttle(function(details) {
   if (PULLS.test(details.url)) {
-    chrome.tabs.executeScript(details.tabId, { file: "src/inject/pulls.js" });
+    chrome.tabs.executeScript(details.tabId, { file: "js/jquery/jquery.min.js" }, function() {
+      chrome.tabs.executeScript(details.tabId, { file: "src/inject/pulls.js" });
+    });
     chrome.tabs.insertCSS(details.tabId, { file: "src/inject/pulls.css" });
   } else if (PULL.test(details.url)) {
-    chrome.tabs.executeScript(details.tabId, { file: "src/inject/pull.js" });
+    chrome.tabs.executeScript(details.tabId, { file: "js/jquery/jquery.min.js" }, function() {
+      chrome.tabs.executeScript(details.tabId, { file: "src/inject/pull.js" });
+    });
     chrome.tabs.insertCSS(details.tabId, { file: "src/inject/pull.css" });
   }
 }, 3000));

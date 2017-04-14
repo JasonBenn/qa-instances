@@ -1,3 +1,32 @@
-/**
- * Place your custom CSS styles here.
- **/
+.issues-listing li {
+  position: relative;
+}
+
+.qai-badge {
+  position: absolute;
+  bottom: 0;
+  right: 16px;
+}
+
+.qai-link {
+
+}
+
+.qai-complete {
+
+}
+
+.qai-building {
+
+}
+
+.qai-hide {
+  display: none;
+}
+
+.qai-off-right {
+  padding: 10px;
+  position: absolute;
+  width: 20px;
+  right: -40px;
+}

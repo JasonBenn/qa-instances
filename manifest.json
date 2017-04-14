@@ -31,5 +31,6 @@
       "js": ["js/jquery/jquery.min.js", "src/inject/pull.js"],
       "css": ["src/inject/pull.css"]
     }
-  ]
+  ],
+  "web_accessible_resources": ["src/templates/*"]
 }
