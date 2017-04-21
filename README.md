@@ -1,0 +1,1 @@
+This extension injects assets and HTML into Github PR pages.
