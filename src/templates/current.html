@@ -1,2 +1,22 @@
-QA instance: [seminar-jb-lo-index](url) at #da135c
-[(Re)deploy latest commit] (say "Redeploy" if already at latest, otherwise say deploy)
+<div class="branch-action-item">
+  <div class="merging-body squashing-body">
+    <div class="branch-action-item-icon completeness-indicator completeness-indicator-success">
+      <svg aria-hidden="true" class="octicon octicon-check" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z"></path></svg>
+    </div>
+
+    <h4 class="status-heading">QA instance online</h4>
+    <span class="status-meta"><a href="<%= url %>"><%= url %></a></span>
+  </div>
+
+  <% if (newerShaAvailable) { %>
+    <div class="rebasing-body">
+        <div class="branch-action-item-icon completeness-indicator completeness-indicator-success">
+          <svg aria-hidden="true" class="octicon octicon-check" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z"></path></svg>
+        </div>
+
+        <h4 class="status-heading">This branch has no conflicts with the base branch when rebasing</h4>
+
+        <span class="status-meta">Rebase and merge can be performed automatically.</span>
+    </div>
+  <% } %>
+</div>

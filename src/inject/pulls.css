@@ -27,6 +27,11 @@
 .qai-off-right {
   padding: 10px;
   position: absolute;
-  width: 20px;
-  right: -40px;
+  right: -50px;
+  width: 50px;
+  height: 56px;
+  top: -1px;
+  border: 1px solid #e1e4e8;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
