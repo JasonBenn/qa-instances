@@ -1,3 +1,10 @@
-/**
- * Place your custom CSS styles here.
- **/
+.qai-merge-status-list {
+  max-height: inherit !important;
+  border-width: 1px 0 !important;
+}
+
+.qai-li-icon-wrapper {
+  margin-right: 0 !important;
+  margin-left: 12px;
+  width: 30px;
+}
