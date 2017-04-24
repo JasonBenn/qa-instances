@@ -8,3 +8,45 @@
   margin-left: 12px;
   width: 30px;
 }
+
+.qai-completeness-indicator-progress {
+  background-color: #dbab09;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.qai-spinning {
+  animation: 2s linear infinite spinning;
+}
+
+@keyframes spinning {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.qai-branch-action-item {
+  border-top: 1px solid #e1e4e8;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 2px;
+}
+
+.qai-branch-action-item-left { 
+  padding: 15px !important;
+}
+
+.qai-branch-action-item-dark-bg {
+  background-color: #fafbfc !important;
+}
+
+.qai-branch-action-item-heading-only {
+  display: flex !important;
+  align-items: center;
+}
+
+.qai-branch-action-item-heading-only .status-heading {
+  line-height: 1.8;
+}
+
+.qai-fake-link {
+  cursor: pointer;
+}
