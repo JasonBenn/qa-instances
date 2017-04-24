@@ -19,7 +19,8 @@
     "notifications",
     "webNavigation",
     "https://github.com/minervaproject/*/pull*",
-    "http://qa-instance-coordinator.minervaproject.com/*"
+    "http://qa-instance-coordinator.minervaproject.com/*",
+    "https://qa-instance-coordinator.minervaproject.com/*"
   ],
   "content_security_policy": "script-src 'self' https://qa-instance-coordinator.minervaproject.com; object-src 'self'",
   "content_scripts": [
