@@ -26,12 +26,12 @@
   "content_scripts": [
     {
       "matches": ["https://github.com/minervaproject/*/pulls"],
-      "js": ["js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/utils.js", "src/inject/pulls.js"],
+      "js": ["js/socket.io.js", "js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/utils.js", "src/inject/pulls.js"],
       "css": ["src/inject/pulls.css"]
     },
     {
       "matches": ["https://github.com/minervaproject/*/pull/*"],
-      "js": ["js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/utils.js", "src/inject/pull.js"],
+      "js": ["js/socket.io.js", "js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/utils.js", "src/inject/pull.js"],
       "css": ["src/inject/pull.css"]
     }
   ],

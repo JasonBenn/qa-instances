@@ -16,12 +16,18 @@ var state = {
   newCommitUrl: "https://github.com/minervaproject/picasso/pull/2283/commits/6085a62e8f9ae0a365f4b16bac89a6e223ccea02"
 }
 
+var socket = io.connect('https://qa-instance-coordinator.minervaproject.com/');
+
 function getPrId() {
   return /\/(\d+)$/.exec(location.href)[1]
 }
 
+function getPrName() {
+  return $('.commit-ref').last().attr('title').split(':').slice(1).join(':')
+}
+
 function getLatestSha() {
-  return "acefee"
+  return $('.commit-id').last().text()
 }
 
 function listenForClickDestroy() {
@@ -39,7 +45,11 @@ function listenForClickCreate() {
   $("#qai-create").click(function() {
     state.loading = true
     render()
-    ajaxPost(BASE_URL + "/pulls/", { prId: getPrId() }).done(function(response) {
+    ajaxPost(BASE_URL + "/pulls/", { 
+      prId: getPrId(),
+      prName: getPrName(),
+      sha: getLatestSha()
+    }).done(function(response) {
       state = _.extend(state, response.data, { loading: false })
       render()
     })
@@ -79,6 +89,13 @@ function render() {
   })
 }
 
+function updateStateAndRender(prData) {
+  // Filter out any key/value pairs with undefined values.
+  var stateUpdates = _.pick(prData, _.identity)
+  state = _.extend(state, stateUpdates)
+  render()
+}
+
 chrome.extension.sendMessage({}, function(response) {
 
   var readyStateCheckInterval = setInterval(function() {
@@ -93,13 +110,16 @@ chrome.extension.sendMessage({}, function(response) {
       })
 
       $.when(prStatusPromise, wrapperPromise).done(function(prStatus, wrapper) {
-        var prData = prStatus[0].data
-        var stateUpdates = _.pick(prData, _.identity)
-        state = _.extend(state, stateUpdates)
-        render()
+        updateStateAndRender(prStatus[0].data)
       })
 
-      // TODO: on message: render
+      socket.on('picasso/pull/' + getPrId(), function(message) {
+        console.log(arguments);
+        updateStateAndRender(JSON.parse(message))
+      })
+
+      console.log("latestSha:", getLatestSha());
+      console.log("prName:", getPrName());
 
   	}
 	}, 10);
