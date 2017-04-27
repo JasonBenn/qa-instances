@@ -11,7 +11,7 @@
   },
   "default_locale": "en",
   "background": {
-    "scripts": ["js/socket.io.js", "js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/utils.js", "src/bg/background.js"],
+    "scripts": ["js/socket.io.js", "js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/config.js", "src/utils.js", "src/bg/background.js"],
     "persistent": true
   },
   "permissions": [
@@ -20,18 +20,20 @@
     "webNavigation",
     "https://github.com/minervaproject/*/pull*",
     "http://qa-instance-coordinator.minervaproject.com/*",
-    "https://qa-instance-coordinator.minervaproject.com/*"
+    "https://qa-instance-coordinator.minervaproject.com/*",
+    "http://qa-instance-coordinator-local.minervaproject.com/*",
+    "https://qa-instance-coordinator-local.minervaproject.com/*"
   ],
   "content_security_policy": "script-src 'self' https://qa-instance-coordinator.minervaproject.com; object-src 'self'",
   "content_scripts": [
     {
       "matches": ["https://github.com/minervaproject/*/pulls"],
-      "js": ["js/socket.io.js", "js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/utils.js", "src/inject/pulls.js"],
+      "js": ["js/socket.io.js", "js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/config.js", "src/utils.js", "src/inject/pulls.js"],
       "css": ["src/inject/pulls.css"]
     },
     {
       "matches": ["https://github.com/minervaproject/*/pull/*"],
-      "js": ["js/socket.io.js", "js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/utils.js", "src/inject/pull.js"],
+      "js": ["js/socket.io.js", "js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/config.js", "src/utils.js", "src/inject/pull.js"],
       "css": ["src/inject/pull.css"]
     }
   ],

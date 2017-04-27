@@ -8,8 +8,10 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(_.throttle(function(detai
     chrome.tabs.executeScript(details.tabId, { file: "js/socket.io.js" }, function() {
       chrome.tabs.executeScript(details.tabId, { file: "js/jquery/jquery.min.js" }, function() {
         chrome.tabs.executeScript(details.tabId, { file: "js/underscore/underscore-min.js" }, function() {
-          chrome.tabs.executeScript(details.tabId, { file: "src/utils.js" }, function() {
-            chrome.tabs.executeScript(details.tabId, { file: "src/inject/pulls.js" });
+          chrome.tabs.executeScript(details.tabId, { file: "src/config.js" }, function() {
+            chrome.tabs.executeScript(details.tabId, { file: "src/utils.js" }, function() {
+              chrome.tabs.executeScript(details.tabId, { file: "src/inject/pulls.js" });
+            });
           });
         });
       });
@@ -19,8 +21,10 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(_.throttle(function(detai
     chrome.tabs.executeScript(details.tabId, { file: "js/socket.io.js" }, function() {
       chrome.tabs.executeScript(details.tabId, { file: "js/jquery/jquery.min.js" }, function() {
         chrome.tabs.executeScript(details.tabId, { file: "js/underscore/underscore-min.js" }, function() {
-          chrome.tabs.executeScript(details.tabId, { file: "src/utils.js" }, function() {
-            chrome.tabs.executeScript(details.tabId, { file: "src/inject/pull.js" });
+          chrome.tabs.executeScript(details.tabId, { file: "src/config.js" }, function() {
+            chrome.tabs.executeScript(details.tabId, { file: "src/utils.js" }, function() {
+              chrome.tabs.executeScript(details.tabId, { file: "src/inject/pull.js" });
+            });
           });
         });
       });

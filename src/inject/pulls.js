@@ -11,7 +11,7 @@ chrome.extension.sendMessage({}, function(response) {
       prs.forEach(function(prId) {
         getTemplate("badge").done(function(template) {
           var html = template({
-            url: "https://qa-features-lo-detail-page.minervaproject.com/app/login"
+            url: BASE_URL + "/app/login"
           })
           $('#issue_'+prId+' > .d-table').append(html)
         })

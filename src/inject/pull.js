@@ -1,5 +1,3 @@
-var BASE_URL = "https://qa-instance-coordinator.minervaproject.com"
-
 var initialState = {
   instanceState: "offline"
 }
@@ -59,7 +57,6 @@ function listenForClickCreate() {
 function render() {
   var templatePromise
   var callback = noOp
-  console.log("rendering:", state);
 
   if (state.loading) {
     templatePromise = getTemplate("loading")
@@ -114,12 +111,8 @@ chrome.extension.sendMessage({}, function(response) {
       })
 
       socket.on('picasso/pull/' + getPrId(), function(message) {
-        console.log(arguments);
         updateStateAndRender(JSON.parse(message))
       })
-
-      console.log("latestSha:", getLatestSha());
-      console.log("prName:", getPrName());
 
   	}
 	}, 10);
