@@ -1,20 +1,29 @@
-var initialState = {
-  instanceState: "offline"
+var initialUIState = {
+  loading: false
 }
 
 var state = {
-  loading: false,
-  instanceState: "offline", // offline, starting, online, stopping
+  // state part 1: UI-only state - mixed in from above object
 
-  newerShaAvailable: true, // getLatestSha() !== data.sha,
-  url: "https://qa-features-lo-detail-page.minervaproject.com",
-  oldCommitSha: "c4c82e1",
-  oldCommitUrl: "https://github.com/minervaproject/picasso/pull/2187/commits/c4c82e13295f3e73d77c6a7659598f3dbf4b9487",
-  newCommitSha: "6085a62",
-  newCommitUrl: "https://github.com/minervaproject/picasso/pull/2283/commits/6085a62e8f9ae0a365f4b16bac89a6e223ccea02"
+  // state part 2: key-value pairs from the DB record corresponding to this PR
+  // changes in the DB record are broadcast to this state atom via pubsub.
+
+  // state part 3: progress outputs from long-running API functions
+  // keys here must exactly correspond to API function names. Names recorded here for sanity.
+  // createDB: ""
+
+  // -- to delete --
+  // instanceState: "offline", // offline, starting, online, stopping
+
+  // url: "https://qa-features-lo-detail-page.minervaproject.com",
+  // oldCommitSha: "c4c82e1",
+  // oldCommitUrl: "https://github.com/minervaproject/picasso/pull/2187/commits/c4c82e13295f3e73d77c6a7659598f3dbf4b9487",
+  // newCommitSha: "6085a62",
+  // newCommitUrl: "https://github.com/minervaproject/picasso/pull/2283/commits/6085a62e8f9ae0a365f4b16bac89a6e223ccea02",
 }
 
-var socket = io.connect('https://qa-instance-coordinator.minervaproject.com/');
+console.log('ps: connecting to', BASE_URL);
+var socket = io.connect(BASE_URL);
 
 function getPrId() {
   return /\/(\d+)$/.exec(location.href)[1]
@@ -30,10 +39,10 @@ function getLatestSha() {
 
 function listenForClickDestroy() {
   $('#qai-destroy').click(function() {
-    state.instanceState = "stopping"
+    state = { loading: true }
     render()
     ajaxDelete(BASE_URL + "/pulls/" + getPrId()).done(function() {
-      state = _.clone(initialState)
+      state = { loading: false }
       render()
     })
   })
@@ -48,8 +57,8 @@ function listenForClickCreate() {
       prName: getPrName(),
       sha: getLatestSha()
     }).done(function(response) {
-      state = _.extend(state, response.data, { loading: false })
-      render()
+      var stateUpdates = _.extend({}, response.data, { loading: false })
+      updateStateAndRender(stateUpdates)
     })
   })
 }
@@ -61,13 +70,9 @@ function render() {
   if (state.loading) {
     templatePromise = getTemplate("loading")
 
-  } else {
+  } else if (state.instanceState) {
 
-    if (state.instanceState === "offline") {
-      templatePromise = getTemplate("create")
-      callback = listenForClickCreate
-
-    } else if (state.instanceState === "starting") {
+    if (state.instanceState === "starting") {
       templatePromise = getTemplate("starting")
       callback = listenForClickDestroy
 
@@ -78,6 +83,10 @@ function render() {
     } else if (state.instanceState === "stopping") {
       templatePromise = getTemplate("stopping")
     }
+
+  } else {
+    templatePromise = getTemplate("create")
+    callback = listenForClickCreate
   }
 
   templatePromise.done(function(template) {
@@ -88,8 +97,8 @@ function render() {
 
 function updateStateAndRender(prData) {
   // Filter out any key/value pairs with undefined values.
-  var stateUpdates = _.pick(prData, _.identity)
-  state = _.extend(state, stateUpdates)
+  var stateUpdates = _.omit(_.omit(prData, _.isUndefined), _.isNull)
+  _.extend(state, stateUpdates)
   render()
 }
 
@@ -106,7 +115,7 @@ chrome.extension.sendMessage({}, function(response) {
         $('.mergeability-details .branch-action-item').last().after(template())
       })
 
-      $.when(prStatusPromise, wrapperPromise).done(function(prStatus, wrapper) {
+      $.when(prStatusPromise, wrapperPromise).done(function(prStatus, _) {
         updateStateAndRender(prStatus[0].data)
       })
 
@@ -114,6 +123,7 @@ chrome.extension.sendMessage({}, function(response) {
         updateStateAndRender(JSON.parse(message))
       })
 
+      console.log('ps: listening on channel "picasso/pull/' + getPrId() + '"');
   	}
 	}, 10);
 });
