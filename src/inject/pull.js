@@ -1,26 +1,16 @@
 var initialUIState = {
-  loading: false
+  // state part 1: UI-only state
+  loading: false,
+
+  // state part 2: progress outputs from long-running API functions
+  // keys here, by convention, are equal to names of functions emitting status updates
+  createDB: "",
+
+  // state part 3: all key-value pairs from relevant DB record
+  dbState: ""
 }
 
-var state = {
-  // state part 1: UI-only state - mixed in from above object
-
-  // state part 2: key-value pairs from the DB record corresponding to this PR
-  // changes in the DB record are broadcast to this state atom via pubsub.
-
-  // state part 3: progress outputs from long-running API functions
-  // keys here must exactly correspond to API function names. Names recorded here for sanity.
-  // createDB: ""
-
-  // -- to delete --
-  // instanceState: "offline", // offline, starting, online, stopping
-
-  // url: "https://qa-features-lo-detail-page.minervaproject.com",
-  // oldCommitSha: "c4c82e1",
-  // oldCommitUrl: "https://github.com/minervaproject/picasso/pull/2187/commits/c4c82e13295f3e73d77c6a7659598f3dbf4b9487",
-  // newCommitSha: "6085a62",
-  // newCommitUrl: "https://github.com/minervaproject/picasso/pull/2283/commits/6085a62e8f9ae0a365f4b16bac89a6e223ccea02",
-}
+var state = _.clone(initialUIState)
 
 console.log('ps: connecting to', BASE_URL);
 var socket = io.connect(BASE_URL);
@@ -39,10 +29,10 @@ function getLatestSha() {
 
 function listenForClickDestroy() {
   $('#qai-destroy').click(function() {
-    state = { loading: true }
+    state.loading = true
     render()
     ajaxDelete(BASE_URL + "/pulls/" + getPrId()).done(function() {
-      state = { loading: false }
+      state = _.clone(initialUIState)
       render()
     })
   })
@@ -67,30 +57,27 @@ function render() {
   var templatePromise
   var callback = noOp
 
+  var instanceState = state.instanceState
+
   if (state.loading) {
     templatePromise = getTemplate("loading")
 
-  } else if (state.instanceState) {
-
-    if (state.instanceState === "starting") {
-      templatePromise = getTemplate("starting")
-      callback = listenForClickDestroy
-
-    } else if (state.instanceState === "online") {
-      templatePromise = getTemplate("online")
-      callback = listenForClickDestroy
-
-    } else if (state.instanceState === "stopping") {
-      templatePromise = getTemplate("stopping")
-    }
-
-  } else {
+  } else if (instanceState === States.Instance.OFFLINE || !instanceState) {
     templatePromise = getTemplate("create")
     callback = listenForClickCreate
+
+  } else if (instanceState === States.Instance.STARTING || instanceState === States.Instance.STOPPING) {
+    templatePromise = getTemplate("changing")
+    callback = listenForClickDestroy
+
+  } else if (instanceState === States.Instance.ONLINE) {
+    templatePromise = getTemplate("online")
+    callback = listenForClickDestroy
   }
 
   templatePromise.done(function(template) {
-    $('.pulls-wrapper').html(template(state))
+    // Mix in valid states from config.js.
+    $('.pulls-wrapper').html(template(_.extend({}, States, state)))
     callback()
   })
 }
@@ -120,6 +107,7 @@ chrome.extension.sendMessage({}, function(response) {
       })
 
       socket.on('picasso/pull/' + getPrId(), function(message) {
+        console.log('ps:', message);
         updateStateAndRender(JSON.parse(message))
       })
 
