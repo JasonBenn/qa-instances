@@ -1,9 +1,6 @@
-var LOCAL = true
+var LOCAL = false
+
 var BASE_URL = "https://qa-instance-coordinator" + (LOCAL ? "-local" : "") + ".minervaproject.com"
-
-var DB_STATES = {
-
-}
 
 var States = {
   Instance: {
