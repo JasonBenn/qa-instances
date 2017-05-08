@@ -50,3 +50,8 @@
 .qai-fake-link {
   cursor: pointer;
 }
+
+.qai-offscreen {
+  position: fixed;
+  right: 5000px;
+}
