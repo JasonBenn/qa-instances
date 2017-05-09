@@ -15,10 +15,10 @@ EC2: stopping... | :green-check-mark: created
       <!-- <svg aria-hidden="true" class="octicon octicon-check" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z"></path></svg> -->
     </div>
 
-    <% if (instanceState === States.Instance.STARTING) { %>
+    <% if (instanceState === States.STARTING) { %>
       <h4 class="status-heading">QA instance starting...</h4>
       <span class="status-meta">...</span>
-    <% } else if (instanceState === States.Instance.STOPPING) { %>
+    <% } else if (instanceState === States.STOPPING) { %>
       <h4 class="status-heading">QA instance stopping...</h4>
       <span class="status-meta">...</span>
     <% } %>
@@ -33,7 +33,7 @@ EC2: stopping... | :green-check-mark: created
 
     <% if (dbState) { %>
       <div class="merge-status-item d-flex flex-items-baseline">
-        <% if (dbState === States.DB.STARTING) { %>
+        <% if (dbState === States.STARTING) { %>
           <div class="qai-li-icon-wrapper flex-self-center">
             <svg class="octicon octicon-database text-yellow" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6 15c-3.31 0-6-.9-6-2v-2c0-.17.09-.34.21-.5.67.86 3 1.5 5.79 1.5s5.12-.64 5.79-1.5c.13.16.21.33.21.5v2c0 1.1-2.69 2-6 2zm0-4c-3.31 0-6-.9-6-2V7c0-.11.04-.21.09-.31.03-.06.07-.13.12-.19C.88 7.36 3.21 8 6 8s5.12-.64 5.79-1.5c.05.06.09.13.12.19.05.1.09.21.09.31v2c0 1.1-2.69 2-6 2zm0-4c-3.31 0-6-.9-6-2V3c0-1.1 2.69-2 6-2s6 .9 6 2v2c0 1.1-2.69 2-6 2zm0-5c-2.21 0-4 .45-4 1s1.79 1 4 1 4-.45 4-1-1.79-1-4-1z"></path></svg>
           </div>
@@ -41,7 +41,7 @@ EC2: stopping... | :green-check-mark: created
           <div class="text-gray col-10 css-truncate css-truncate-target" title="Creating DB">
             <%= createDB %>
           </div>
-        <% } else if (dbState === States.DB.ONLINE) { %>
+        <% } else if (dbState === States.ONLINE) { %>
           <div class="qai-li-icon-wrapper flex-self-center">
             <svg class="octicon octicon-database text-green" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6 15c-3.31 0-6-.9-6-2v-2c0-.17.09-.34.21-.5.67.86 3 1.5 5.79 1.5s5.12-.64 5.79-1.5c.13.16.21.33.21.5v2c0 1.1-2.69 2-6 2zm0-4c-3.31 0-6-.9-6-2V7c0-.11.04-.21.09-.31.03-.06.07-.13.12-.19C.88 7.36 3.21 8 6 8s5.12-.64 5.79-1.5c.05.06.09.13.12.19.05.1.09.21.09.31v2c0 1.1-2.69 2-6 2zm0-4c-3.31 0-6-.9-6-2V3c0-1.1 2.69-2 6-2s6 .9 6 2v2c0 1.1-2.69 2-6 2zm0-5c-2.21 0-4 .45-4 1s1.79 1 4 1 4-.45 4-1-1.79-1-4-1z"></path></svg>
           </div>
@@ -50,7 +50,7 @@ EC2: stopping... | :green-check-mark: created
             Created <%= dbName %>
           </div>
   
-        <% } else if (dbState === States.DB.OFFLINE) { %>
+        <% } else if (dbState === States.OFFLINE) { %>
           <div class="qai-li-icon-wrapper flex-self-center">
             <svg class="octicon octicon-database text-red" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6 15c-3.31 0-6-.9-6-2v-2c0-.17.09-.34.21-.5.67.86 3 1.5 5.79 1.5s5.12-.64 5.79-1.5c.13.16.21.33.21.5v2c0 1.1-2.69 2-6 2zm0-4c-3.31 0-6-.9-6-2V7c0-.11.04-.21.09-.31.03-.06.07-.13.12-.19C.88 7.36 3.21 8 6 8s5.12-.64 5.79-1.5c.05.06.09.13.12.19.05.1.09.21.09.31v2c0 1.1-2.69 2-6 2zm0-4c-3.31 0-6-.9-6-2V3c0-1.1 2.69-2 6-2s6 .9 6 2v2c0 1.1-2.69 2-6 2zm0-5c-2.21 0-4 .45-4 1s1.79 1 4 1 4-.45 4-1-1.79-1-4-1z"></path></svg>
           </div>
@@ -58,7 +58,7 @@ EC2: stopping... | :green-check-mark: created
           <div class="text-gray col-10 css-truncate css-truncate-target" title="DB offline">
             DB offline
           </div>
-        <% } else if (dbState === States.DB.ERROR) { %>
+        <% } else if (dbState === States.ERROR) { %>
           <div class="qai-li-icon-wrapper flex-self-center">
             <svg class="octicon octicon-database text-red" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6 15c-3.31 0-6-.9-6-2v-2c0-.17.09-.34.21-.5.67.86 3 1.5 5.79 1.5s5.12-.64 5.79-1.5c.13.16.21.33.21.5v2c0 1.1-2.69 2-6 2zm0-4c-3.31 0-6-.9-6-2V7c0-.11.04-.21.09-.31.03-.06.07-.13.12-.19C.88 7.36 3.21 8 6 8s5.12-.64 5.79-1.5c.05.06.09.13.12.19.05.1.09.21.09.31v2c0 1.1-2.69 2-6 2zm0-4c-3.31 0-6-.9-6-2V3c0-1.1 2.69-2 6-2s6 .9 6 2v2c0 1.1-2.69 2-6 2zm0-5c-2.21 0-4 .45-4 1s1.79 1 4 1 4-.45 4-1-1.79-1-4-1z"></path></svg>
           </div>
