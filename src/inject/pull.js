@@ -18,7 +18,15 @@ var initialUIState = {
   deployInstanceState: "",
   route53State: "",
   startInstanceState: "",
-  serviceInstanceState: ""
+  serviceInstanceState: "",
+
+  overallErrorMessage: "",
+  dbErrorMessage: "",
+  instanceErrorMessage: "",
+  deployInstanceErrorMessage: "",
+  route53ErrorMessage: "",
+  startInstanceErrorMessage: "",
+  serviceInstanceErrorMessage: ""
 }
 
 var state = _.clone(initialUIState)

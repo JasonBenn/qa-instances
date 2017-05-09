@@ -27,7 +27,7 @@
       </div>
 
       <div class="text-gray col-10 css-truncate css-truncate-target">
-        <%= stateToText(dbState, dbProgress, dbErrorMessage) %>
+        <%= stateToText(dbState, "DB: ", dbProgress, dbErrorMessage) %>
       </div>
     </div>
 
@@ -39,7 +39,7 @@
       </div>
 
       <div class="text-gray col-10 css-truncate css-truncate-target">
-        <%= stateToText(instanceState, instanceProgress, instanceErrorMessage) %>
+        <%= stateToText(instanceState, "Instance: ", instanceProgress, instanceErrorMessage) %>
       </div>
     </div>
 
@@ -53,7 +53,7 @@
         </div>
 
         <div class="text-gray col-10 css-truncate css-truncate-target">
-          <%= stateToText(startInstanceState, startInstanceProgress, startInstanceErrorMessage) %>
+          <%= stateToText(startInstanceState, "Start instance: ", startInstanceProgress, startInstanceErrorMessage) %>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
       </div>
 
       <div class="text-gray col-10 css-truncate css-truncate-target">
-        <%= stateToText(route53State, route53Progress, route53ErrorMessage) %>
+        <%= stateToText(route53State, "Route53: ", route53Progress, route53ErrorMessage) %>
       </div>
     </div>
 
@@ -81,7 +81,7 @@
         </div>
 
         <div class="text-gray col-10 css-truncate css-truncate-target">
-          <%= stateToText(deployInstanceState, deployInstanceProgress, deployInstanceErrorMessage) %>
+          <%= stateToText(deployInstanceState, "Deploy instance: ", deployInstanceProgress, deployInstanceErrorMessage) %>
         </div>
       </div>
 
@@ -93,7 +93,7 @@
         </div>
 
         <div class="text-gray col-10 css-truncate css-truncate-target">
-          <%= stateToText(serviceInstanceState, serviceInstanceProgress, serviceInstanceErrorMessage) %>
+          <%= stateToText(serviceInstanceState, "Service instance: ", serviceInstanceProgress, serviceInstanceErrorMessage) %>
         </div>
       </div>
 

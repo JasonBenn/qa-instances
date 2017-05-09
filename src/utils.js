@@ -51,20 +51,20 @@ var Helpers = {
       "online": "green",
       "stopping": "yellow",
       "error": "red"
-    }[state]
+    }[state] || "gray"
   },
 
-  stateToText: function(state, progressUpdate, errorMessage) {
+  stateToText: function(state, messagePrefix, progressUpdate, errorMessage) {
     if (state === States.Online) {
-      return "Online"
+      return messagePrefix + "online"
     } else if (state === States.Starting) {
-      return progressUpdate
-    } else if (state === States.Offline) {
-      return "Offline"
+      return messagePrefix + (progressUpdate || "starting...")
+    } else if (state === States.Offline || !state) {
+      return messagePrefix + "offline"
     } else if (state === States.Stopping) {
-      return "Stopping"
+      return messagePrefix + (progressUpdate || "stopping...")
     } else if (state === States.Error) {
-      return errorMessage
+      return messagePrefix + errorMessage
     }
   }
 }
