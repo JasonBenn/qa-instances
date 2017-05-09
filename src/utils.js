@@ -34,3 +34,37 @@ function ajaxPost(url, data, options) {
 }
 
 function noOp() {}
+
+var States = {
+  Offline: "offline",
+  Starting: "starting",
+  Online: "online",
+  Stopping: "stopping",
+  Error: "error"
+}
+
+var Helpers = {
+  stateToColor: function(state) {
+    return {
+      "offline": "gray",
+      "starting": "yellow",
+      "online": "green",
+      "stopping": "yellow",
+      "error": "red"
+    }[state]
+  },
+
+  stateToText: function(state, progressUpdate, errorMessage) {
+    if (state === States.Online) {
+      return "Online"
+    } else if (state === States.Starting) {
+      return progressUpdate
+    } else if (state === States.Offline) {
+      return "Offline"
+    } else if (state === States.Stopping) {
+      return "Stopping"
+    } else if (state === States.Error) {
+      return errorMessage
+    }
+  }
+}

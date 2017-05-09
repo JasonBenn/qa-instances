@@ -3,11 +3,22 @@ var initialUIState = {
   loading: false,
 
   // state part 2: progress outputs from long-running API functions
-  // keys here, by convention, are equal to names of functions emitting status updates
-  createDB: "",
+  overallProgress: "",
+  dbProgress: "",
+  instanceProgress: "",
+  deployInstanceProgress: "",
+  route53Progress: "",
+  startInstanceProgress: "",
+  serviceInstanceProgress: "",
 
   // state part 3: all key-value pairs from relevant DB record
-  dbState: ""
+  overallState: "",
+  dbState: "",
+  instanceState: "",
+  deployInstanceState: "",
+  route53State: "",
+  startInstanceState: "",
+  serviceInstanceState: ""
 }
 
 var state = _.clone(initialUIState)
@@ -57,27 +68,27 @@ function render() {
   var templatePromise
   var callback = noOp
 
-  var instanceState = state.instanceState
+  var overallState = state.overallState
 
   if (state.loading) {
     templatePromise = getTemplate("loading")
 
-  } else if (instanceState === States.Instance.OFFLINE || !instanceState) {
-    templatePromise = getTemplate("create")
+  } else if (overallState === States.Offline || !overallState) {
+    templatePromise = getTemplate("offline")
     callback = listenForClickCreate
 
-  } else if (instanceState === States.Instance.STARTING || instanceState === States.Instance.STOPPING) {
-    templatePromise = getTemplate("changing")
+  } else if (overallState === States.Starting || overallState === States.Stopping) {
+    templatePromise = getTemplate("starting-stopping")
     callback = listenForClickDestroy
 
-  } else if (instanceState === States.Instance.ONLINE) {
+  } else if (overallState === States.Online) {
     templatePromise = getTemplate("online")
     callback = listenForClickDestroy
   }
 
   templatePromise.done(function(template) {
     // Mix in valid states from config.js.
-    $('.pulls-wrapper').html(template(_.extend({}, States, state)))
+    $('.qai-wrapper').html(template(_.extend({}, States, Helpers, state)))
     callback()
   })
 }
@@ -96,7 +107,7 @@ chrome.extension.sendMessage({}, function(response) {
       clearInterval(readyStateCheckInterval);
 
       var prStatusPromise = $.get(BASE_URL + '/pulls/' + getPrId())
-      var wrapperPromise = getTemplate('pull-wrapper')
+      var wrapperPromise = getTemplate('wrapper')
 
       wrapperPromise.done(function(template) {
         $('.mergeability-details .branch-action-item').last().after(template())
