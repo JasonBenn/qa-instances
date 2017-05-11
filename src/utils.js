@@ -9,6 +9,10 @@ function monkeyPatchWebsocketClient(socket) {
   }
 }
 
+function getUrlOfBottomOfPrPage(prId) {
+  return "/minervaproject/picasso/pull/" + prId + "#partial-new-comment-form-actions"
+}
+
 function getTemplate(template) {
   var promise = $.Deferred()
   var badge = chrome.runtime.getURL('src/templates/' + template + '.html')

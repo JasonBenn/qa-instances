@@ -35,7 +35,7 @@ console.log('ps: connecting to', BASE_URL);
 var socket = io.connect(BASE_URL);
 
 function getPrId() {
-  return /\/(\d+)$/.exec(location.href)[1]
+  return /\/(\d+)#.*$/.exec(location.href)[1]
 }
 
 function getPrName() {
