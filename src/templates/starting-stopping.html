@@ -25,7 +25,7 @@
       </div>
 
       <div class="text-gray col-10 css-truncate css-truncate-target">
-        <%= stateToText(dbState, "DB: ", dbProgress, dbError) %>
+        <%= getCopy("db", dbState, dbProgress, dbError) %>
       </div>
     </div>
 
@@ -35,11 +35,11 @@
       </div>
 
       <div class="text-gray col-10 css-truncate css-truncate-target">
-        <%= stateToText(instanceState, "Instance: ", instanceProgress, instanceError) %>
+        <%= getCopy("instance", instanceState, instanceProgress, instanceError) %>
       </div>
     </div>
 
-    <% if (overallState === States.Starting) { %>
+    <% if (overallState === States.Starting || overallState === States.Error) { %>
 
       <div class="merge-status-item d-flex flex-items-baseline">
         <div class="qai-li-icon-wrapper flex-self-center">
@@ -47,7 +47,7 @@
         </div>
 
         <div class="text-gray col-10 css-truncate css-truncate-target">
-          <%= stateToText(startInstanceState, "Start instance: ", startInstanceProgress, startInstanceError) %>
+          <%= getCopy("startInstance", startInstanceState, startInstanceProgress, startInstanceError) %>
         </div>
       </div>
 
@@ -59,11 +59,11 @@
       </div>
 
       <div class="text-gray col-10 css-truncate css-truncate-target">
-        <%= stateToText(route53State, "Route53: ", route53Progress, route53Error) %>
+        <%= getCopy("route53", route53State, route53Progress, route53Error) %>
       </div>
     </div>
 
-    <% if (overallState === States.Starting) { %>
+    <% if (overallState === States.Starting || overallState === States.Error) { %>
 
       <div class="merge-status-item d-flex flex-items-baseline">
         <div class="qai-li-icon-wrapper flex-self-center">
@@ -71,7 +71,7 @@
         </div>
 
         <div class="text-gray col-10 css-truncate css-truncate-target">
-          <%= stateToText(deployInstanceState, "Deploy instance: ", deployInstanceProgress, deployInstanceError) %>
+          <%= getCopy("deployInstance", deployInstanceState, deployInstanceProgress, deployInstanceError) %>
         </div>
       </div>
 
@@ -81,7 +81,7 @@
         </div>
 
         <div class="text-gray col-10 css-truncate css-truncate-target">
-          <%= stateToText(serviceInstanceState, "Service instance: ", serviceInstanceProgress, serviceInstanceError) %>
+          <%= getCopy("serviceInstance", serviceInstanceState, serviceInstanceProgress, serviceInstanceError) %>
         </div>
       </div>
 

@@ -54,6 +54,49 @@ var States = {
   Error: "error"
 }
 
+var Copy = {
+  db: {
+    offline: "Database deleted",
+    starting: "Creating database",
+    online: "Database created",
+    stopping: "Deleting database",
+    error: "Database error"
+  },
+  instance: {
+    offline: "Instance deleted",
+    starting: "Creating instance",
+    online: "Instance created",
+    stopping: "Deleting instance",
+    error: "Instance creation/deletion error"
+  },
+  startInstance: {
+    offline: "Instance offline",
+    starting: "Starting instance",
+    online: "Instance online",
+    stopping: "Stopping instance",
+    error: "Start/stop instance error"
+  },
+  route53: {
+    offline: "Route53 record offline",
+    starting: "Creating Route53 record",
+    online: "Route53 record created",
+    stopping: "Deleting Route53 record",
+    error: "Route53 error"
+  },
+  deployInstance: {
+    offline: "Deploy recipe not started",
+    starting: "Deploying instance",
+    online: "Deploy succeeded",
+    error: "Deploy error"
+  },
+  serviceInstance: {
+    offline: "Sanitize, migrate, service: waiting on DB & deploy steps",
+    starting: "Sanitizing DB, migrating, running services",
+    online: "Service recipes succeeded",
+    error: "Sanitize, migration, and/or servicing error"
+  }
+}
+
 var Helpers = {
   stateToColor: function(state) {
     return {
@@ -65,17 +108,16 @@ var Helpers = {
     }[state] || "gray"
   },
 
-  stateToText: function(state, messagePrefix, progressUpdate, errorMessage) {
-    if (state === States.Online) {
-      return messagePrefix + "online"
-    } else if (state === States.Starting) {
-      return messagePrefix + (progressUpdate || "starting...")
-    } else if (state === States.Offline || !state) {
-      return messagePrefix + "offline"
-    } else if (state === States.Stopping) {
-      return messagePrefix + (progressUpdate || "stopping...")
-    } else if (state === States.Error) {
-      return messagePrefix + errorMessage
+  getCopy: function(uiType, state, progressUpdate, errorMessage) {
+    console.log(uiType, state, progressUpdate, errorMessage)
+    var baseCopy = Copy[uiType][state || "offline"]
+
+    if ((state === States.Starting && progressUpdate) || (state === States.Stopping && progressUpdate)) {
+      return baseCopy + ": " + progressUpdate
+    } else if (state === States.Error && errorMessage) {
+      return baseCopy + ": " + errorMessage
+    } else {
+      return baseCopy
     }
   }
 }
