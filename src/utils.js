@@ -113,7 +113,6 @@ var Helpers = {
   },
 
   getCopy: function(uiType, state, progressUpdate, errorMessage) {
-    console.log(uiType, state, progressUpdate, errorMessage)
     var baseCopy = Copy[uiType][state || "offline"]
 
     if ((state === States.Starting && progressUpdate) || (state === States.Stopping && progressUpdate)) {
