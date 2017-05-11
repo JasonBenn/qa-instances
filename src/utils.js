@@ -1,3 +1,14 @@
+function monkeyPatchWebsocketClient(socket) {
+  // Emits every received message to "*" channel, enabling clients to listen for all messages.
+  var onevent = socket.onevent
+  socket.onevent = function(packet) {
+      var args = packet.data || []
+      onevent.call(this, packet)  // original call
+      packet.data = ["*"].concat(args)
+      onevent.call(this, packet)
+  }
+}
+
 function getTemplate(template) {
   var promise = $.Deferred()
   var badge = chrome.runtime.getURL('src/templates/' + template + '.html')
