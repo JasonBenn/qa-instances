@@ -47,11 +47,22 @@
   line-height: 1.8;
 }
 
-.qai-fake-link {
-  cursor: pointer;
+.qai-title-line-item {
+  position: relative;
 }
 
-.qai-offscreen {
-  position: fixed;
-  right: 5000px;
+.qai-status-heading {
+  height: 30px;
+  line-height: 30px;
+}
+
+.qai-destroy-link {
+  position: absolute;
+  right: 0px;
+  bottom: 50%;
+  transform: translateY(50%);
+}
+
+.qai-destroy-link a {
+  cursor: pointer;
 }
