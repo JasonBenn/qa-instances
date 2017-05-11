@@ -14,7 +14,10 @@ chrome.extension.sendMessage({}, function(response) {
           var args
 
           if (pr.overallState === "starting" || pr.overallState === "stopping") {
-            args = { color: "yellow", url: "#" }
+            args = { color: "yellow", url: getUrlOfBottomOfPrPage(pr.prId) }
+
+          } else if (pr.overallState === "error") {
+            args = { color: "red", url: getUrlOfBottomOfPrPage(pr.prId) }
 
           } else if (pr.overallState === "online") {
             var url = pr.domainName + "/app/login"

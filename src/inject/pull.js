@@ -85,7 +85,7 @@ function render() {
     templatePromise = getTemplate("offline")
     callback = listenForClickCreate
 
-  } else if (overallState === States.Starting || overallState === States.Stopping) {
+  } else if ([States.Starting, States.Stopping, States.Error].includes(overallState)) {
     templatePromise = getTemplate("starting-stopping")
     callback = listenForClickDestroy
 
