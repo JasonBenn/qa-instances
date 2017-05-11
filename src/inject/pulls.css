@@ -1,7 +1,3 @@
-.issues-listing li {
-  position: relative;
-}
-
 .qai-off-right {
   padding: 10px;
   position: absolute;
@@ -12,4 +8,13 @@
   border: 1px solid #e1e4e8;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
+}
+
+.issues-listing li {
+  position: relative;
+}
+
+.navigation-focus .qai-off-right {
+  background-color: #f6f8fa;
+  cursor: pointer;
 }
