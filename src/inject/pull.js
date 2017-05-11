@@ -20,13 +20,13 @@ var initialUIState = {
   startInstanceState: "",
   serviceInstanceState: "",
 
-  overallErrorMessage: "",
-  dbErrorMessage: "",
-  instanceErrorMessage: "",
-  deployInstanceErrorMessage: "",
-  route53ErrorMessage: "",
-  startInstanceErrorMessage: "",
-  serviceInstanceErrorMessage: ""
+  overallError: "",
+  dbError: "",
+  instanceError: "",
+  deployInstanceError: "",
+  route53Error: "",
+  startInstanceError: "",
+  serviceInstanceError: ""
 }
 
 var state = _.clone(initialUIState)
@@ -51,7 +51,7 @@ function listenForClickDestroy() {
     state.loading = true
     render()
     ajaxDelete(BASE_URL + "/pulls/" + getPrId()).done(function() {
-      state = _.clone(initialUIState)
+      state.loading = false
       render()
     })
   })
