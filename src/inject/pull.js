@@ -103,7 +103,7 @@ function render() {
 
 function updateStateAndRender(prData) {
   // Filter out any key/value pairs with undefined values.
-  var stateUpdates = _.omit(_.omit(prData, _.isUndefined), _.isNull)
+  var stateUpdates = _.omit(prData, _.isUndefined)
   _.extend(state, stateUpdates)
   render()
 }
