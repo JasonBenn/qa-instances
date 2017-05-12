@@ -5,14 +5,13 @@ function render(prId, template, state, domainName) {
   var args
 
   if (state === "starting" || state === "stopping") {
-    args = { color: "yellow", url: getUrlOfBottomOfPrPage(prId) }
+    args = { color: "yellow", domainName: getUrlOfBottomOfPrPage(prId) }
 
   } else if (state === "error") {
-    args = { color: "red", url: getUrlOfBottomOfPrPage(prId) }
+    args = { color: "red", domainName: getUrlOfBottomOfPrPage(prId) }
 
   } else if (state === "online") {
-    var url = domainName + "/app/login"
-    args = { color: "green", url: url }
+    args = { color: "green", domainName: "https://" + domainName }
   }
 
   $('#issue_' + prId + ' > .d-table').append(template(args))

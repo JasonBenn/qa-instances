@@ -9,8 +9,9 @@ function monkeyPatchWebsocketClient(socket) {
   }
 }
 
+var ID_SELECTOR_NEAR_BOTTOM_OF_PAGE = "#partial-new-comment-form-actions"
 function getUrlOfBottomOfPrPage(prId) {
-  return "/minervaproject/picasso/pull/" + prId + "#partial-new-comment-form-actions"
+  return "/minervaproject/picasso/pull/" + prId + ID_SELECTOR_NEAR_BOTTOM_OF_PAGE
 }
 
 function getTemplate(template) {
