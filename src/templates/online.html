@@ -46,7 +46,7 @@
         <%= getCopy("db", dbState, dbProgress, dbError) %>
       </div>
 
-      <% if (overallState !== States.Stopping && overallState !== States.Offline) { %>
+      <% if (overallState !== States.Stopping && overallState !== States.Offline && dbState !== States.Starting) { %>
         <div class="d-flex col-2 flex-shrink-0">
           <a id="qai-update-db" class="status-actions qai-link">Update database</a>
         </div>
