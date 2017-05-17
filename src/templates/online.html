@@ -1,14 +1,33 @@
 <div class="branch-action-item qai-branch-action-item">
   <div class="merging-body squashing-body qai-title-line-item">
-    <div class="branch-action-item-icon completeness-indicator completeness-indicator-success">
-      <svg class="octicon octicon-telescope" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 9l3 6h-1l-2-4v5H7v-6l-2 5H4l2-5 2-1zM7 0H6v1h1V0zM5 3H4v1h1V3zM2 1H1v1h1V1zM.63 9a.52.52 0 0 0-.16.67l.55.92c.13.23.41.31.64.2l1.39-.66-1.16-2-1.27.86.01.01zm7.89-5.39l-5.8 3.95L3.95 9.7l6.33-3.03-1.77-3.06h.01zm4.22 1.28l-1.47-2.52a.51.51 0 0 0-.72-.17l-1.2.83 1.84 3.2 1.33-.64c.27-.13.36-.44.22-.7z"></path></svg>
-    </div>
+    <% if (overallState === States.Error) { %>
+      <div class="branch-action-item-icon completeness-indicator completeness-indicator-error">
+        <svg class="octicon octicon-x" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"></path></svg>
+      </div>
+    <% } else { %>
+      <div class="branch-action-item-icon completeness-indicator qai-completeness-indicator-progress">
+        <svg class="octicon octicon-sync qai-spinning" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M10.24 7.4a4.15 4.15 0 0 1-1.2 3.6 4.346 4.346 0 0 1-5.41.54L4.8 10.4.5 9.8l.6 4.2 1.31-1.26c2.36 1.74 5.7 1.57 7.84-.54a5.876 5.876 0 0 0 1.74-4.46l-1.75-.34zM2.96 5a4.346 4.346 0 0 1 5.41-.54L7.2 5.6l4.3.6-.6-4.2-1.31 1.26c-2.36-1.74-5.7-1.57-7.85.54C.5 5.03-.06 6.65.01 8.26l1.75.35A4.17 4.17 0 0 1 2.96 5z"></path></svg>
+      </div>
+    <% } %>
 
-    <h4 class="status-heading qai-status-heading">QA instance online</h4>
+    <% if (overallState === States.Online) { %>
+      <h4 class="status-heading qai-status-heading">QA instance online</h4>
+    <% } else if (overallState === States.Starting) { %>
+      <h4 class="status-heading qai-status-heading">QA instance starting...</h4>
+    <% } else if (overallState === States.Stopping) { %>
+      <h4 class="status-heading qai-status-heading">QA instance stopping...</h4>
+    <% } else if (overallState === States.Error) { %>
+      <h4 class="status-heading qai-status-heading">QA instance startup error</h4>
+    <% } %>
 
-    <div class="qai-destroy-link">
-      <a href="https://<%= domainName %>" target="blank" class="status-actions qai-link">Visit</a>
-    </div>
+    <% if (overallState === States.Online) { %>
+      <div class="qai-destroy-link">
+        <a href="https://<%= domainName %>" target="blank" class="status-actions qai-link"><%= domainName %></a>
+      </div>
+    <% } else { %>
+      <div class="qai-destroy-link"><%= domainName %></div>
+    <% } %>
+
   </div>
 
   <div class="merge-status-list qai-merge-status-list">
@@ -25,11 +44,52 @@
       <div class="d-flex col-2 flex-shrink-0">
         <a id="qai-update-db" class="status-actions qai-link">Update database</a>
       </div>
+
     </div>
 
-  </div>
+    <% if (overallState === States.Starting || overallState === States.Error || instanceState !== States.Online) { %>
 
-  <div class="merge-status-list qai-merge-status-list">
+      <div class="merge-status-item d-flex flex-items-baseline">
+        <div class="qai-li-icon-wrapper flex-self-center">
+          <svg class="octicon octicon-server text-<%= stateToColor(instanceState) %>" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 6H1c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V7c0-.55-.45-1-1-1zM2 9H1V7h1v2zm2 0H3V7h1v2zm2 0H5V7h1v2zm2 0H7V7h1v2zm3-8H1c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1zM2 4H1V2h1v2zm2 0H3V2h1v2zm2 0H5V2h1v2zm2 0H7V2h1v2zm3-1h-1V2h1v1zm0 8H1c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1v-2c0-.55-.45-1-1-1zm-9 3H1v-2h1v2zm2 0H3v-2h1v2zm2 0H5v-2h1v2zm2 0H7v-2h1v2z"></path></svg>
+        </div>
+
+        <div class="text-gray col-10 css-truncate css-truncate-target">
+          <%= getCopy("instance", instanceState, instanceProgress, instanceError) %>
+        </div>
+      </div>
+
+    <% } %>
+
+    <div class="merge-status-item d-flex flex-items-baseline">
+      <div class="qai-li-icon-wrapper flex-self-center">
+        <svg class="octicon octicon-pulse text-<%= stateToColor(startInstanceState) %>" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 8L8.8 5.4 6.6 8.5 5.5 1.6 2.38 8H0v2h3.6l.9-1.8.9 5.4L9 8.5l1.6 1.5H14V8z"></path></svg>
+      </div>
+
+      <div class="text-gray col-8 css-truncate css-truncate-target">
+        <%= getCopy("startInstance", startInstanceState, startInstanceProgress, startInstanceError) %>
+      </div>
+
+      <div class="d-flex col-4 flex-shrink-0">
+        <a id="qai-destroy" class="status-actions text-red qai-link" title="Also cleans up database & Route53 record">Destroy instance, DB, route53</a>
+      </div>
+
+    </div>
+
+    <% if (overallState === States.Starting || overallState === States.Error || route53State !== States.Online) { %>
+
+      <div class="merge-status-item d-flex flex-items-baseline">
+        <div class="qai-li-icon-wrapper flex-self-center">
+          <svg class="octicon octicon-link text-<%= stateToColor(route53State) %>" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 10h1v3c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h3v1H1v10h10v-3zM6 2l2.25 2.25L5 7.5 6.5 9l3.25-3.25L12 8V2H6z"></path></svg>
+        </div>
+
+        <div class="text-gray col-10 css-truncate css-truncate-target">
+          <%= getCopy("route53", route53State, route53Progress, route53Error) %>
+        </div>
+      </div>
+
+    <% } %>
+
     <div class="merge-status-item d-flex flex-items-baseline">
       <div class="qai-li-icon-wrapper flex-self-center">
         <svg class="octicon octicon-repo text-<%= stateToColor(deployInstanceState) %>" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M13 8V6H7V4h6V2l3 3-3 3zM4 2H3v1h1V2zm7 5h1v6c0 .55-.45 1-1 1H6v2l-1.5-1.5L3 16v-2H1c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1h10c.55 0 1 .45 1 1v2h-1V1H2v9h9V7zm0 4H1v2h2v-1h3v1h5v-2zM4 6H3v1h1V6zm0-2H3v1h1V4zM3 9h1V8H3v1z"></path></svg>
@@ -39,33 +99,32 @@
         <%= getCopy("deployInstance", deployInstanceState, deployInstanceProgress, deployInstanceError) %>
       </div>
 
-      <div class="d-flex col-3 flex-grow-1">
-        <a id="qai-retry" data-ui-type="deploy" class="status-actions qai-link">
-          Deploy <% if (sha) { %> (at: <pre class="qai-pre d-inline-block"><%= sha %></pre>) <% } %>
-        </a>
-      </div>
-
-      <div class="qai-drawer" id="deployInstanceLogs"></div>
-
-    </div>
-  </div>
-
-  <div class="merge-status-list qai-merge-status-list">
-
-    <div class="merge-status-item d-flex flex-items-baseline">
-      <div class="qai-li-icon-wrapper flex-self-center">
-        <svg class="octicon octicon-pulse text-<%= stateToColor(startInstanceState) %>" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 8L8.8 5.4 6.6 8.5 5.5 1.6 2.38 8H0v2h3.6l.9-1.8.9 5.4L9 8.5l1.6 1.5H14V8z"></path></svg>
-      </div>
-
-      <div class="text-gray col-10 css-truncate css-truncate-target">
-        <%= getCopy("startInstance", startInstanceState, startInstanceProgress, startInstanceError) %>
-      </div>
-
-      <div class="d-flex col-2 flex-shrink-0">
-        <a id="qai-destroy" class="status-actions text-red qai-link" title="Also cleans up database & Route53 record">Destroy</a>
-      </div>
+      <% if (deployInstanceState === States.Online || deployInstanceState === States.Error) { %>
+        <div class="d-flex col-3 flex-grow-1">
+          <a id="qai-retry" class="status-actions qai-link">
+            Deploy <% if (sha) { %> (at: <pre class="qai-pre d-inline-block"><%= sha %></pre>) <% } %>
+          </a>
+        </div>
+      <% } %>
     </div>
 
-  </div>
+    <div class="qai-drawer" id="deployInstanceLogs"></div>
 
+    <% if (overallState === States.Starting || overallState === States.Error || serviceInstanceState !== States.Online) { %>
+
+      <div class="merge-status-item d-flex flex-items-baseline">
+        <div class="qai-li-icon-wrapper flex-self-center">
+          <svg class="octicon octicon-terminal text-<%= stateToColor(serviceInstanceState) %>" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7 10h4v1H7v-1zm-3 1l3-3-3-3-.75.75L5.5 8l-2.25 2.25L4 11zm10-8v10c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h12c.55 0 1 .45 1 1zm-1 0H1v10h12V3z"></path></svg>
+        </div>
+
+        <div class="text-gray col-10 css-truncate css-truncate-target">
+          <%= getCopy("serviceInstance", serviceInstanceState, serviceInstanceProgress, serviceInstanceError) %>
+        </div>
+
+        <div class="qai-drawer" id="serviceInstanceLogs"></div>
+      </div>
+
+    <% } %>
+
+  </div>
 </div>

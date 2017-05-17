@@ -115,7 +115,7 @@ function render() {
     templatePromise = getTemplate("offline")
 
   } else {
-    templatePromise = getTemplate("starting-stopping")
+    templatePromise = getTemplate("online")
   }
 
   templatePromise.done(function(template) {
