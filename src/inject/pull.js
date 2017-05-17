@@ -101,12 +101,11 @@ function registerListeners() {
   listenForClickDestroy()
   listenForClickUpdateDB()
   listenForClickRedeploy()
+  listenForClickCreate()
 }
 
 function render() {
   var templatePromise
-  var callback = noOp
-
   var overallState = state.overallState
 
   if (state.loading) {
@@ -114,21 +113,15 @@ function render() {
 
   } else if (overallState === States.Offline || !overallState) {
     templatePromise = getTemplate("offline")
-    callback = listenForClickCreate
 
-  } else if ([States.Starting, States.Stopping, States.Error].includes(overallState)) {
+  } else {
     templatePromise = getTemplate("starting-stopping")
-    callback = registerListeners
-
-  } else if (overallState === States.Online) {
-    templatePromise = getTemplate("online")
-    callback = registerListeners
   }
 
   templatePromise.done(function(template) {
     // Mix in valid states from config.js.
     $('.qai-wrapper').html(template(_.extend({}, States, Helpers, state)))
-    callback()
+    registerListeners()
   })
 }
 

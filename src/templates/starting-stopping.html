@@ -40,17 +40,26 @@
       <div class="text-gray col-10 css-truncate css-truncate-target">
         <%= getCopy("db", dbState, dbProgress, dbError) %>
       </div>
-    </div>
 
-    <div class="merge-status-item d-flex flex-items-baseline">
-      <div class="qai-li-icon-wrapper flex-self-center">
-        <svg class="octicon octicon-server text-<%= stateToColor(instanceState) %>" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 6H1c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V7c0-.55-.45-1-1-1zM2 9H1V7h1v2zm2 0H3V7h1v2zm2 0H5V7h1v2zm2 0H7V7h1v2zm3-8H1c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1zM2 4H1V2h1v2zm2 0H3V2h1v2zm2 0H5V2h1v2zm2 0H7V2h1v2zm3-1h-1V2h1v1zm0 8H1c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1v-2c0-.55-.45-1-1-1zm-9 3H1v-2h1v2zm2 0H3v-2h1v2zm2 0H5v-2h1v2zm2 0H7v-2h1v2z"></path></svg>
+      <div class="d-flex col-2 flex-shrink-0">
+        <a id="qai-update-db" class="status-actions qai-link">Update database</a>
       </div>
 
-      <div class="text-gray col-10 css-truncate css-truncate-target">
-        <%= getCopy("instance", instanceState, instanceProgress, instanceError) %>
-      </div>
     </div>
+
+    <% if (overallState === States.Starting || overallState === States.Error || instanceState !== States.Online) { %>
+
+      <div class="merge-status-item d-flex flex-items-baseline">
+        <div class="qai-li-icon-wrapper flex-self-center">
+          <svg class="octicon octicon-server text-<%= stateToColor(instanceState) %>" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 6H1c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V7c0-.55-.45-1-1-1zM2 9H1V7h1v2zm2 0H3V7h1v2zm2 0H5V7h1v2zm2 0H7V7h1v2zm3-8H1c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1V2c0-.55-.45-1-1-1zM2 4H1V2h1v2zm2 0H3V2h1v2zm2 0H5V2h1v2zm2 0H7V2h1v2zm3-1h-1V2h1v1zm0 8H1c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h10c.55 0 1-.45 1-1v-2c0-.55-.45-1-1-1zm-9 3H1v-2h1v2zm2 0H3v-2h1v2zm2 0H5v-2h1v2zm2 0H7v-2h1v2z"></path></svg>
+        </div>
+
+        <div class="text-gray col-10 css-truncate css-truncate-target">
+          <%= getCopy("instance", instanceState, instanceProgress, instanceError) %>
+        </div>
+      </div>
+
+    <% } %>
 
     <div class="merge-status-item d-flex flex-items-baseline">
       <div class="qai-li-icon-wrapper flex-self-center">
@@ -67,15 +76,19 @@
 
     </div>
 
-    <div class="merge-status-item d-flex flex-items-baseline">
-      <div class="qai-li-icon-wrapper flex-self-center">
-        <svg class="octicon octicon-link text-<%= stateToColor(route53State) %>" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 10h1v3c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h3v1H1v10h10v-3zM6 2l2.25 2.25L5 7.5 6.5 9l3.25-3.25L12 8V2H6z"></path></svg>
+    <% if (overallState === States.Starting || overallState === States.Error || route53State !== States.Online) { %>
+
+      <div class="merge-status-item d-flex flex-items-baseline">
+        <div class="qai-li-icon-wrapper flex-self-center">
+          <svg class="octicon octicon-link text-<%= stateToColor(route53State) %>" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11 10h1v3c0 .55-.45 1-1 1H1c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h3v1H1v10h10v-3zM6 2l2.25 2.25L5 7.5 6.5 9l3.25-3.25L12 8V2H6z"></path></svg>
+        </div>
+
+        <div class="text-gray col-10 css-truncate css-truncate-target">
+          <%= getCopy("route53", route53State, route53Progress, route53Error) %>
+        </div>
       </div>
 
-      <div class="text-gray col-10 css-truncate css-truncate-target">
-        <%= getCopy("route53", route53State, route53Progress, route53Error) %>
-      </div>
-    </div>
+    <% } %>
 
     <div class="merge-status-item d-flex flex-items-baseline">
       <div class="qai-li-icon-wrapper flex-self-center">
@@ -97,7 +110,7 @@
 
     <div class="qai-drawer" id="deployInstanceLogs"></div>
 
-    <% if (overallState === States.Starting || overallState === States.Error) { %>
+    <% if (overallState === States.Starting || overallState === States.Error || serviceInstanceState !== States.Online) { %>
 
       <div class="merge-status-item d-flex flex-items-baseline">
         <div class="qai-li-icon-wrapper flex-self-center">
