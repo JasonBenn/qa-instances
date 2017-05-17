@@ -2,19 +2,23 @@ var socket = io.connect(BASE_URL);
 monkeyPatchWebsocketClient(socket)
 
 function render(prId, template, state, domainName) {
-  var args
+  var color, url
 
-  if (state === "starting" || state === "stopping") {
-    args = { color: "yellow", domainName: getUrlOfBottomOfPrPage(prId) }
-
-  } else if (state === "error") {
-    args = { color: "red", domainName: getUrlOfBottomOfPrPage(prId) }
-
-  } else if (state === "online") {
-    args = { color: "green", domainName: "https://" + domainName }
+  if (!domainName) {
+    url = getUrlOfBottomOfPrPage(prId)
+  } else {
+    url = "https://" + domainName
   }
 
-  $('#issue_' + prId + ' > .d-table').append(template(args))
+  if (state === "starting" || state === "stopping") {
+    color = "yellow"
+  } else if (state === "error") {
+    color = "red"
+  } else if (state === "online") {
+    color = "green"
+  }
+
+  $('#issue_' + prId + ' > .d-table').append(template({ url: url, color: color }))
 }
 
 chrome.extension.sendMessage({}, function(response) {
