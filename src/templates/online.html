@@ -41,9 +41,11 @@
         <%= getCopy("db", dbState, dbProgress, dbError) %>
       </div>
 
-      <div class="d-flex col-2 flex-shrink-0">
-        <a id="qai-update-db" class="status-actions qai-link">Update database</a>
-      </div>
+      <% if (overallState !== States.Stopping && overallState !== States.Offline) { %>
+        <div class="d-flex col-2 flex-shrink-0">
+          <a id="qai-update-db" class="status-actions qai-link">Update database</a>
+        </div>
+      <% } %>
 
     </div>
 
@@ -70,9 +72,11 @@
         <%= getCopy("startInstance", startInstanceState, startInstanceProgress, startInstanceError) %>
       </div>
 
-      <div class="d-flex col-4 flex-shrink-0">
-        <a id="qai-destroy" class="status-actions text-red qai-link" title="Also cleans up database & Route53 record">Destroy instance, DB, route53</a>
-      </div>
+      <% if (overallState !== States.Stopping && overallState !== States.Offline) { %>
+        <div class="d-flex col-4 flex-shrink-0">
+          <a id="qai-destroy" class="status-actions text-red qai-link" title="Also cleans up database & Route53 record">Destroy instance, DB, route53</a>
+        </div>
+      <% } %>
 
     </div>
 
@@ -95,14 +99,14 @@
         <svg class="octicon octicon-repo text-<%= stateToColor(deployInstanceState) %>" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M13 8V6H7V4h6V2l3 3-3 3zM4 2H3v1h1V2zm7 5h1v6c0 .55-.45 1-1 1H6v2l-1.5-1.5L3 16v-2H1c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1h10c.55 0 1 .45 1 1v2h-1V1H2v9h9V7zm0 4H1v2h2v-1h3v1h5v-2zM4 6H3v1h1V6zm0-2H3v1h1V4zM3 9h1V8H3v1z"></path></svg>
       </div>
 
-      <div class="text-gray col-9 css-truncate css-truncate-target">
+      <div class="text-gray col-8 css-truncate css-truncate-target">
         <%= getCopy("deployInstance", deployInstanceState, deployInstanceProgress, deployInstanceError) %>
       </div>
 
       <% if (deployInstanceState === States.Online || deployInstanceState === States.Error) { %>
-        <div class="d-flex col-3 flex-grow-1">
+        <div class="d-flex col-4 flex-grow-1">
           <a id="qai-retry" class="status-actions qai-link">
-            Deploy <% if (sha) { %> (at: <pre class="qai-pre d-inline-block"><%= sha %></pre>) <% } %>
+            Redeploy <% if (sha && deployInstanceState === States.Online) { %> (current: <pre class="qai-pre d-inline-block"><%= sha %></pre>) <% } %>
           </a>
         </div>
       <% } %>
