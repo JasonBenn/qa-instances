@@ -5,6 +5,10 @@
 This extension injects assets and HTML into Github PR pages.
 The API server is [here](https://github.com/minervaproject/qa-instances-api).
 
+# Updating
+
+You'll need to a) pull the latest updates and b) reload extensions (I recommend [Extensions Reloader](https://chrome.google.com/webstore/detail/extensions-reloader/fimgfedafeadlieiabdeeaodndnlbhid/related), but you can also just browse to chrome://extensions and click "Reload Extension").
+
 # Local development
 
 - Set the LOCAL boolean in config.js.
