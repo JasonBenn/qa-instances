@@ -63,6 +63,27 @@
   transform: translateY(50%);
 }
 
-.qai-destroy-link a {
+.qai-link {
   cursor: pointer;
+}
+
+.qai-drawer {
+  max-height: 160px;
+  overflow-y: scroll;
+  color: #586069;
+  background-color: #f4f5f7;
+}
+
+.qai-drawer pre {
+  margin-bottom: 3px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.qai-drawer pre:first-child {
+  margin-top: 15px;
+}
+
+.qai-drawer pre:last-child {
+  margin-bottom: 15px;
 }

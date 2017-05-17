@@ -1,6 +1,7 @@
 var initialUIState = {
   // state part 1: UI-only state
   loading: false,
+  newerShaAvailable: true,
 
   // state part 2: progress outputs from long-running API functions
   overallProgress: "",
@@ -131,6 +132,24 @@ function render() {
   })
 }
 
+function logsToHTML(log) {
+  return log.split('\n').map(function(line) {
+    return "<pre>" + line + "</pre>"
+  }).join("")
+}
+
+function appendLogUpdate(message) {
+  var $logsContainer
+  if (message.deployInstanceLog) {
+    $logsContainer = $('#deployInstanceLogs')
+    $logsContainer.append(logsToHTML(message.deployInstanceLog))
+  } else if (message.serviceInstanceLog) {
+    $logsContainer = $('#serviceInstanceLogs')
+    $logsContainer.append(logsToHTML(message.serviceInstanceLog))
+  }
+  $logsContainer[0].scrollTop += 1000
+}
+
 function updateStateAndRender(prData) {
   // Filter out any key/value pairs with undefined values.
   var stateUpdates = _.omit(prData, _.isUndefined)
@@ -156,8 +175,13 @@ chrome.extension.sendMessage({}, function(response) {
       })
 
       socket.on('picasso/pull/' + getPrId(), function(message) {
-        console.log('ps:', message);
-        updateStateAndRender(JSON.parse(message))
+        var parsedMessage = JSON.parse(message)
+        if (parsedMessage.deployInstanceLog || parsedMessage.serviceInstanceLog) {
+          appendLogUpdate(parsedMessage)
+        } else {
+          console.log('ps:', message)
+          updateStateAndRender(parsedMessage)
+        }
       })
 
       console.log('ps: listening on channel "picasso/pull/' + getPrId() + '"');
