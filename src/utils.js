@@ -95,7 +95,7 @@ var Copy = {
     error: "Deploy error"
   },
   serviceInstance: {
-    offline: "Sanitize, migrate, service: waiting on DB & deploy steps",
+    offline: "Sanitize, migrate, service",
     starting: "Sanitizing DB, migrating, running services",
     online: "Service recipes succeeded",
     error: "Sanitize, migration, and/or servicing error"
