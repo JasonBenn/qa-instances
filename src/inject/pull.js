@@ -1,7 +1,7 @@
 var initialUIState = {
   // state part 1: UI-only state
   loading: false,
-  newerShaAvailable: true,
+  sha: undefined,
 
   // state part 2: progress outputs from long-running API functions
   overallProgress: "",

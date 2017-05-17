@@ -87,3 +87,7 @@
 .qai-drawer pre:last-child {
   margin-bottom: 15px;
 }
+
+a:hover .qai-pre {
+  text-decoration: underline;
+}
