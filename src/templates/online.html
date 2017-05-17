@@ -105,7 +105,7 @@
 
       <% if (deployInstanceState === States.Online || deployInstanceState === States.Error) { %>
         <div class="d-flex col-4 flex-grow-1">
-          <a id="qai-retry" class="status-actions qai-link">
+          <a id="qai-redeploy" class="status-actions qai-link">
             Redeploy <% if (sha && deployInstanceState === States.Online) { %> (current: <pre class="qai-pre d-inline-block"><%= sha %></pre>) <% } %>
           </a>
         </div>
