@@ -98,7 +98,10 @@ function listenForClickRedeploy() {
 }
 
 function maybeRequestFailedLog() {
-  if (state.deployInstanceState === States.Error || state.serviceInstanceState === States.Error) {
+  if (state.deployInstanceState === States.Error
+    || state.deployInstanceState === States.Starting
+    || state.deployInstanceState === States.Error
+    || state.serviceInstanceState === States.Stopping) {
     ajaxPost(BASE_URL + "/pulls/logs", {
       prId: getPrId()
     }).done(function(message) {
@@ -112,7 +115,6 @@ function registerListeners() {
   listenForClickUpdateDB()
   listenForClickRedeploy()
   listenForClickCreate()
-  maybeRequestFailedLog()
 }
 
 function render() {
@@ -176,6 +178,7 @@ chrome.extension.sendMessage({}, function(response) {
 
       $.when(prStatusPromise, wrapperPromise).done(function(prStatus, _) {
         updateStateAndRender(prStatus[0].data)
+        maybeRequestFailedLog()
       })
 
       socket.on('picasso/pull/' + getPrId(), function(message) {
