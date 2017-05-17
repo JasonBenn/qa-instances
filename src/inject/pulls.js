@@ -30,7 +30,7 @@ chrome.extension.sendMessage({}, function(response) {
           render(pr.prId, template, pr.overallState, pr.domainName)
         })
         
-        socket.on('*', function(channel, rawMessage) {
+        function onMessage(template, channel, rawMessage) {
           var message = JSON.parse(rawMessage)
           var prId = /\d+$/.exec(channel)[0]
           var state = message.overallState
@@ -40,7 +40,9 @@ chrome.extension.sendMessage({}, function(response) {
             console.log('ps:', channel, message)
             render(prId, template, state, domainName)
           }
-        })
+        }
+
+        socket.on('*', onMessage.bind(this, template))
       })
 
   	}
