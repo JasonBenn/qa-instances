@@ -72,6 +72,36 @@ function listenForClickCreate() {
   })
 }
 
+function listenForClickUpdateDB() {
+  $('#qai-update-db').click(function() {
+    ajaxPost(BASE_URL + "/pulls/updateDB", { 
+      prId: getPrId(),
+    }).done(function(response) {
+      var stateUpdates = _.extend({}, response.data, { loading: false })
+      updateStateAndRender(stateUpdates)
+    })
+  })
+}
+
+function listenForClickRedeploy() {
+  $("#qai-redeploy").click(function() {
+    state.loading = true
+    render()
+    ajaxPost(BASE_URL + "/pulls/redeploy", { 
+      prId: getPrId(),
+    }).done(function(response) {
+      var stateUpdates = _.extend({}, response.data, { loading: false })
+      updateStateAndRender(stateUpdates)
+    })
+  })
+}
+
+function registerListeners() {
+  listenForClickDestroy()
+  listenForClickUpdateDB()
+  listenForClickRedeploy()
+}
+
 function render() {
   var templatePromise
   var callback = noOp
@@ -87,11 +117,11 @@ function render() {
 
   } else if ([States.Starting, States.Stopping, States.Error].includes(overallState)) {
     templatePromise = getTemplate("starting-stopping")
-    callback = listenForClickDestroy
+    callback = registerListeners
 
   } else if (overallState === States.Online) {
     templatePromise = getTemplate("online")
-    callback = listenForClickDestroy
+    callback = registerListeners
   }
 
   templatePromise.done(function(template) {

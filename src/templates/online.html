@@ -1,44 +1,73 @@
 <div class="branch-action-item qai-branch-action-item">
-  <div class="merging-body squashing-body">
+  <div class="merging-body squashing-body qai-title-line-item">
     <div class="branch-action-item-icon completeness-indicator completeness-indicator-success">
       <svg class="octicon octicon-telescope" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M8 9l3 6h-1l-2-4v5H7v-6l-2 5H4l2-5 2-1zM7 0H6v1h1V0zM5 3H4v1h1V3zM2 1H1v1h1V1zM.63 9a.52.52 0 0 0-.16.67l.55.92c.13.23.41.31.64.2l1.39-.66-1.16-2-1.27.86.01.01zm7.89-5.39l-5.8 3.95L3.95 9.7l6.33-3.03-1.77-3.06h.01zm4.22 1.28l-1.47-2.52a.51.51 0 0 0-.72-.17l-1.2.83 1.84 3.2 1.33-.64c.27-.13.36-.44.22-.7z"></path></svg>
     </div>
 
-    <h4 class="status-heading">QA instance online</h4>
-    <span class="status-meta"><a href="<%= url %>"><%= url %></a></span>
+    <h4 class="status-heading qai-status-heading">QA instance online</h4>
 
-    <div class="d-flex col-2 flex-shrink-0 float-right">
-      <a id="qai-destroy" class="status-actions text-red qai-fake-link">Destroy</a>
+    <div class="qai-destroy-link">
+      <a href="https://<%= domainName %>" target="blank" class="status-actions qai-link">Visit</a>
     </div>
   </div>
 
+  <div class="merge-status-list qai-merge-status-list">
+
+    <div class="merge-status-item d-flex flex-items-baseline">
+      <div class="qai-li-icon-wrapper flex-self-center">
+        <svg class="octicon octicon-database text-<%= stateToColor(dbState) %>" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M6 15c-3.31 0-6-.9-6-2v-2c0-.17.09-.34.21-.5.67.86 3 1.5 5.79 1.5s5.12-.64 5.79-1.5c.13.16.21.33.21.5v2c0 1.1-2.69 2-6 2zm0-4c-3.31 0-6-.9-6-2V7c0-.11.04-.21.09-.31.03-.06.07-.13.12-.19C.88 7.36 3.21 8 6 8s5.12-.64 5.79-1.5c.05.06.09.13.12.19.05.1.09.21.09.31v2c0 1.1-2.69 2-6 2zm0-4c-3.31 0-6-.9-6-2V3c0-1.1 2.69-2 6-2s6 .9 6 2v2c0 1.1-2.69 2-6 2zm0-5c-2.21 0-4 .45-4 1s1.79 1 4 1 4-.45 4-1-1.79-1-4-1z"></path></svg>
+      </div>
+
+      <div class="text-gray col-10 css-truncate css-truncate-target">
+        <%= getCopy("db", dbState, dbProgress, dbError) %>
+      </div>
+
+      <div class="d-flex col-2 flex-shrink-0">
+        <a id="qai-update-db" class="status-actions qai-link">Update database</a>
+      </div>
+    </div>
+
+  </div>
 
   <% if (newerShaAvailable) { %>
+
     <div class="merge-status-list qai-merge-status-list">
       <div class="merge-status-item d-flex flex-items-baseline">
         <div class="qai-li-icon-wrapper flex-self-center">
-          <svg height="16" class="octicon octicon-git-compare" viewBox="0 0 14 16" version="1.1" width="14" aria-hidden="true"><path fill-rule="evenodd" d="M5 12H4c-.27-.02-.48-.11-.69-.31-.21-.2-.3-.42-.31-.69V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V11c.03.78.34 1.47.94 2.06.6.59 1.28.91 2.06.94h1v2l3-3-3-3v2zM2 1.8c.66 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2C1.35 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2zm11 9.48V5c-.03-.78-.34-1.47-.94-2.06-.6-.59-1.28-.91-2.06-.94H9V0L6 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 12 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+          <svg class="octicon octicon-repo text-<%= stateToColor(deployInstanceState) %>" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M13 8V6H7V4h6V2l3 3-3 3zM4 2H3v1h1V2zm7 5h1v6c0 .55-.45 1-1 1H6v2l-1.5-1.5L3 16v-2H1c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1h10c.55 0 1 .45 1 1v2h-1V1H2v9h9V7zm0 4H1v2h2v-1h3v1h5v-2zM4 6H3v1h1V6zm0-2H3v1h1V4zM3 9h1V8H3v1z"></path></svg>
         </div>
 
-        <div class="text-gray col-10 css-truncate css-truncate-target" title="Update available">
-          <strong class="text-emphasized">
-            Deploy available
-          </strong>
-            — current SHA: 
-            <a class="d-inline-block" href="<%= oldCommitUrl %>">
-              <%= oldCommitSha %>
-            </a> →
-            latest SHA: 
-            <a class="d-inline-block" href="<%= newCommitUrl %>">
-              <%= newCommitSha %>
-            </a>.
+        <div class="text-gray col-10 css-truncate css-truncate-target">
+          <%= getCopy("deployInstance", deployInstanceState, deployInstanceProgress, deployInstanceError) %>
         </div>
 
         <div class="d-flex col-2 flex-shrink-0">
-
-            <a class="status-actions" href="https://circleci.com/gh/minervaproject/picasso/21575?utm_campaign=vcs-integration-link&amp;utm_medium=referral&amp;utm_source=github-build-link">Redeploy</a>
+          <a id="qai-retry" data-ui-type="deploy" class="status-actions text-red qai-link">Redeploy</a>
         </div>
+
+        <div class="qai-drawer" id="deployInstanceLogs"></div>
+
       </div>
     </div>
+
   <% } %>
+
+  <div class="merge-status-list qai-merge-status-list">
+
+    <div class="merge-status-item d-flex flex-items-baseline">
+      <div class="qai-li-icon-wrapper flex-self-center">
+        <svg class="octicon octicon-pulse text-<%= stateToColor(startInstanceState) %>" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 8L8.8 5.4 6.6 8.5 5.5 1.6 2.38 8H0v2h3.6l.9-1.8.9 5.4L9 8.5l1.6 1.5H14V8z"></path></svg>
+      </div>
+
+      <div class="text-gray col-10 css-truncate css-truncate-target">
+        <%= getCopy("startInstance", startInstanceState, startInstanceProgress, startInstanceError) %>
+      </div>
+
+      <div class="d-flex col-2 flex-shrink-0">
+        <a id="qai-destroy" class="status-actions text-red qai-link" title="Also cleans up database & Route53 record">Destroy</a>
+      </div>
+    </div>
+
+  </div>
+
 </div>
