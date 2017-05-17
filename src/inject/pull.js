@@ -97,11 +97,22 @@ function listenForClickRedeploy() {
   })
 }
 
+function maybeRequestFailedLog() {
+  if (state.deployInstanceState === States.Error || state.serviceInstanceState === States.Error) {
+    ajaxPost(BASE_URL + "/pulls/logs", {
+      prId: getPrId()
+    }).done(function(message) {
+      appendLogUpdate(message.data)
+    })
+  }
+}
+
 function registerListeners() {
   listenForClickDestroy()
   listenForClickUpdateDB()
   listenForClickRedeploy()
   listenForClickCreate()
+  maybeRequestFailedLog()
 }
 
 function render() {
@@ -140,7 +151,7 @@ function appendLogUpdate(message) {
     $logsContainer = $('#serviceInstanceLogs')
     $logsContainer.append(logsToHTML(message.serviceInstanceLog))
   }
-  $logsContainer[0].scrollTop += 1000
+  $logsContainer[0].scrollTop += 100000  // scroll to the bottom
 }
 
 function updateStateAndRender(prData) {
