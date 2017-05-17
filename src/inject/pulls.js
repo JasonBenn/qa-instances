@@ -4,10 +4,10 @@ monkeyPatchWebsocketClient(socket)
 function render(prId, template, state, domainName) {
   var color, url
 
-  if (!domainName) {
-    url = getUrlOfBottomOfPrPage(prId)
-  } else {
+  if (state === States.Online) {
     url = "https://" + domainName
+  } else {
+    url = getUrlOfBottomOfPrPage(prId)
   }
 
   if (state === "starting" || state === "stopping") {
