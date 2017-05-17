@@ -63,22 +63,19 @@
 
     <% } %>
 
-    <div class="merge-status-item d-flex flex-items-baseline">
-      <div class="qai-li-icon-wrapper flex-self-center">
-        <svg class="octicon octicon-pulse text-<%= stateToColor(startInstanceState) %>" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 8L8.8 5.4 6.6 8.5 5.5 1.6 2.38 8H0v2h3.6l.9-1.8.9 5.4L9 8.5l1.6 1.5H14V8z"></path></svg>
-      </div>
+    <% if (overallState === States.Starting || overallState === States.Error || startInstanceState !== States.Online) { %>
 
-      <div class="text-gray col-8 css-truncate css-truncate-target">
-        <%= getCopy("startInstance", startInstanceState, startInstanceProgress, startInstanceError) %>
-      </div>
-
-      <% if (overallState !== States.Stopping && overallState !== States.Offline) { %>
-        <div class="d-flex col-4 flex-shrink-0">
-          <a id="qai-destroy" class="status-actions text-red qai-link" title="Also cleans up database & Route53 record">Destroy instance, DB, route53</a>
+      <div class="merge-status-item d-flex flex-items-baseline">
+        <div class="qai-li-icon-wrapper flex-self-center">
+          <svg class="octicon octicon-pulse text-<%= stateToColor(startInstanceState) %>" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M11.5 8L8.8 5.4 6.6 8.5 5.5 1.6 2.38 8H0v2h3.6l.9-1.8.9 5.4L9 8.5l1.6 1.5H14V8z"></path></svg>
         </div>
-      <% } %>
 
-    </div>
+        <div class="text-gray col-8 css-truncate css-truncate-target">
+          <%= getCopy("startInstance", startInstanceState, startInstanceProgress, startInstanceError) %>
+        </div>
+      </div>
+
+    <% } %>
 
     <% if (overallState === States.Starting || overallState === States.Error || route53State !== States.Online) { %>
 
@@ -129,6 +126,17 @@
       </div>
 
     <% } %>
+
+    <div class="merge-status-item d-flex flex-items-baseline">
+      <div class="qai-li-icon-wrapper flex-self-center">
+        <svg class="octicon octicon-x text-red" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"></path></svg>
+      </div>
+
+      <div class="text-gray col-8 css-truncate css-truncate-target">
+        <a id="qai-destroy" class="status-actions text-red qai-link" title="Also cleans up database & Route53 record">Destroy</a>
+      </div>
+
+    </div>
 
   </div>
 </div>
