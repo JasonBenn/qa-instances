@@ -105,7 +105,7 @@ function maybeRequestFailedLog() {
     ajaxPost(BASE_URL + "/pulls/logs", {
       prId: getPrId()
     }).done(function(message) {
-      appendLogUpdate(message.data)
+      if (message.data) appendLogUpdate(message.data)
     })
   }
 }
