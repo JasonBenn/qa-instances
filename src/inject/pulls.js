@@ -11,6 +11,8 @@ var initialPrState = {
 function render(prId, template) {
   var color, url
   var pr = state[prId]
+  var hostName
+  if (pr.domainName) hostName = /^qa(\d)+/.exec(pr.domainName)[1]
 
   if (pr.overallState === States.Online) {
     url = "https://" + pr.domainName
@@ -26,7 +28,7 @@ function render(prId, template) {
     color = "green"
   }
 
-  $('#issue_' + prId + ' > .d-table').append(template({ url: url, color: color }))
+  $('#issue_' + prId + ' > .d-table').append(template({ url: url, color: color, hostName: hostName }))
 }
 
 function updateStateAndRender(template, prId, prData) {

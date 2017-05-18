@@ -1,8 +1,8 @@
 .qai-off-right {
   padding: 10px;
   position: absolute;
-  right: -50px;
-  width: 50px;
+  right: -70px;
+  width: 70px;
   height: 56px;
   top: -1px;
   border: 1px solid #e1e4e8;
@@ -17,4 +17,19 @@
 .navigation-focus .qai-off-right {
   background-color: #f6f8fa;
   cursor: pointer;
+}
+
+.qai-content {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.qai-content * {
+  display: inline-block;
+}
+
+.qai-hostname {
+  font-size: 16px;
 }
