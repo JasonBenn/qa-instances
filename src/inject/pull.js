@@ -173,7 +173,7 @@ chrome.extension.sendMessage({}, function(response) {
       var wrapperPromise = getTemplate('wrapper')
 
       wrapperPromise.done(function(template) {
-        $('.mergeability-details .branch-action-item').last().after(template())
+        $('.branch-action-body').append(template())
       })
 
       $.when(prStatusPromise, wrapperPromise).done(function(prStatus, _) {
