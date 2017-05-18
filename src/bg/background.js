@@ -1,5 +1,5 @@
-var PULLS = /.*:\/\/github.com\/minervaproject\/.*\/pulls/
-var PULL = /.*:\/\/github.com\/minervaproject\/.*\/pull\/.*/
+var PULLS = /.*:\/\/github.com\/minervaproject\/picasso\/pulls/
+var PULL = /.*:\/\/github.com\/minervaproject\/picasso\/pull\/.*/
 
 // Inject JS/CSS on URL updates, because Github is a single-page app.
 // These files should match the content_scripts in manifest.json.

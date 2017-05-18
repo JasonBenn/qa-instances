@@ -27,12 +27,12 @@
   "content_security_policy": "script-src 'self' https://qa-instance-coordinator.minervaproject.com; object-src 'self'",
   "content_scripts": [
     {
-      "matches": ["https://github.com/minervaproject/*/pulls"],
+      "matches": ["https://github.com/minervaproject/picasso/pulls"],
       "js": ["js/socket.io.js", "js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/config.js", "src/utils.js", "src/inject/pulls.js"],
       "css": ["src/inject/pulls.css"]
     },
     {
-      "matches": ["https://github.com/minervaproject/*/pull/*"],
+      "matches": ["https://github.com/minervaproject/picasso/pull/*"],
       "js": ["js/socket.io.js", "js/jquery/jquery.min.js", "js/underscore/underscore-min.js", "src/config.js", "src/utils.js", "src/inject/pull.js"],
       "css": ["src/inject/pull.css"]
     }
