@@ -175,7 +175,9 @@ chrome.extension.sendMessage({}, function(response) {
       var wrapperPromise = getTemplate('wrapper')
 
       wrapperPromise.done(function(template) {
-        $('.branch-action-body').append(template())
+        if (!$('.qai-wrapper').length) {
+          $('.branch-action-body').append(template())
+        }
       })
 
       $.when(prStatusPromise, wrapperPromise).done(function(prStatus, _) {
