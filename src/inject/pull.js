@@ -77,11 +77,13 @@ function listenForClickCreate() {
 
 function listenForClickUpdateDB() {
   $('#qai-update-db').click(function() {
+    state.loading = true
+    render()
     ajaxPost(BASE_URL + "/pulls/updateDB", { 
       prId: getPrId(),
     }).done(function(response) {
-      var stateUpdates = _.extend({}, response.data, { loading: false })
-      updateStateAndRender(stateUpdates)
+      state.loading = false
+      render()
     })
   })
 }
@@ -93,8 +95,8 @@ function listenForClickRedeploy() {
     ajaxPost(BASE_URL + "/pulls/redeploy", { 
       prId: getPrId(),
     }).done(function(response) {
-      var stateUpdates = _.extend({}, response.data, { loading: false })
-      updateStateAndRender(stateUpdates)
+      state.loading = false
+      render()
     })
   })
 }
