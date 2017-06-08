@@ -94,6 +94,7 @@ function listenForClickRedeploy() {
     render()
     ajaxPost(BASE_URL + "/pulls/redeploy", { 
       prId: getPrId(),
+      sha: getLatestSha()
     }).done(function(response) {
       state.loading = false
       render()

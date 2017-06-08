@@ -113,6 +113,15 @@ var Helpers = {
     }[state] || "gray"
   },
 
+  pluralize: function(number, singularized, pluralized) {
+    return number === 1 ? singularized : pluralized
+  },
+
+  commitsSinceSha: function(sha) {
+    var shas = $('.commit-id').map(function(i, commit) { return $(commit).text() })
+    return shas.length - 1 - shas.toArray().indexOf(sha)
+  },
+
   getCopy: function(uiType, state, progressUpdate, errorMessage) {
     var baseCopy = Copy[uiType][state || "offline"]
 

@@ -103,13 +103,18 @@
 
       <div class="text-gray col-8 css-truncate css-truncate-target">
         <%= getCopy("deployInstance", deployInstanceState, deployInstanceProgress, deployInstanceError) %>
+        <% if (sha && deployInstanceState === States.Online) { %>(<pre class="qai-pre d-inline-block"><%= sha %>)</pre><% } %>
       </div>
 
       <% if (deployInstanceState === States.Online || deployInstanceState === States.Error) { %>
         <div class="d-flex col-4 flex-grow-1">
-          <a id="qai-redeploy" class="status-actions qai-link">
-            Redeploy <% if (sha && deployInstanceState === States.Online) { %> (current: <pre class="qai-pre d-inline-block"><%= sha %></pre>) <% } %>
-          </a>
+          <% if (deployInstanceState === States.Online) { %>
+            <a id="qai-redeploy" class="status-actions qai-link">
+              Deploy (<%= commitsSinceSha(sha) %> new <%= pluralize(commitsSinceSha(sha), "commit", "commits") %>)
+            </a>
+          <% } else { %>
+            <span class="text-gray">Deploy</span>
+          <% } %>
         </div>
       <% } %>
     </div>
