@@ -54,17 +54,16 @@ chrome.extension.sendMessage({}, function(response) {
           boundUpdateAndRender(pr.prId, { overallState: pr.overallState, domainName: pr.domainName })
         })
         
-        function onMessage(template, channel, rawMessage) {
+        chrome.runtime.onMessage.addListener(function(channel, message) {
           var prId = /\d+$/.exec(channel)[0]
-          var msg = JSON.parse(rawMessage)
+          var msg = JSON.parse(message)
 
           if (msg.overallState || msg.domainName) {
             console.log('ps:', channel, msg)
             boundUpdateAndRender(prId, { overallState: msg.overallState, domainName: msg.domainName })
           }
-        }
+        })
 
-        socket.on('*', onMessage.bind(this, template))
       })
 
   	}

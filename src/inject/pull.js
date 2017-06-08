@@ -32,9 +32,6 @@ var initialUIState = {
 
 var state = _.clone(initialUIState)
 
-console.log('ps: connecting to', BASE_URL);
-var socket = io.connect(BASE_URL);
-
 function getPrId() {
   const numericSegment = /\/(\d+)(\/?|$)(#.*)?/
   const match = numericSegment.exec(location.href)
@@ -137,6 +134,7 @@ function render() {
 
   templatePromise.done(function(template) {
     // Mix in valid states from config.js.
+    // After pushing "merge" - domainName is not defined. which template is it getting?
     $('.qai-wrapper').html(template(_.extend({}, States, Helpers, state)))
     registerListeners()
   })
@@ -187,15 +185,20 @@ chrome.extension.sendMessage({}, function(response) {
         maybeRequestFailedLog()
       })
 
-      socket.on('picasso/pull/' + getPrId(), function(message) {
-        var parsedMessage = JSON.parse(message)
-        if (parsedMessage.deployInstanceLog || parsedMessage.serviceInstanceLog) {
-          appendLogUpdate(parsedMessage)
-        } else {
-          console.log('ps:', message)
-          updateStateAndRender(parsedMessage)
+      var port = chrome.runtime.connect()
+      var currentChannel = 'picasso/pull/' + getPrId()
+
+      port.onMessage.addListener(function(data) {
+        console.log(data.channel, currentChannel)
+        if (data.channel === currentChannel) {
+          var parsedMessage = JSON.parse(data.message)
+          if (parsedMessage.deployInstanceLog || parsedMessage.serviceInstanceLog) {
+            appendLogUpdate(parsedMessage)
+          } else {
+            updateStateAndRender(parsedMessage)
+          }
         }
-      })
+      });
 
       console.log('ps: listening on channel "picasso/pull/' + getPrId() + '"');
   	}
