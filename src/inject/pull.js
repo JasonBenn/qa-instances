@@ -105,7 +105,7 @@ function listenForClickRedeploy() {
 function maybeRequestFailedLog() {
   if (state.deployInstanceState === States.Error
     || state.deployInstanceState === States.Starting
-    || state.deployInstanceState === States.Error
+    || state.serviceInstanceState === States.Error
     || state.serviceInstanceState === States.Stopping) {
     ajaxPost(BASE_URL + "/pulls/logs", {
       prId: getPrId()
