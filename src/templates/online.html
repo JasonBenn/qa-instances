@@ -107,8 +107,8 @@
       </div>
 
       <% if (deployInstanceState === States.Online || deployInstanceState === States.Error) { %>
-        <div class="d-flex col-4 flex-grow-1">
-          <% if (deployInstanceState === States.Online) { %>
+        <div class="d-flex col-4 flex-grow-1 align-right">
+          <% if (deployInstanceState === States.Online || deployInstanceState === States.Error) { %>
             <a id="qai-redeploy" class="status-actions qai-link">
               Deploy (<%= commitsSinceSha(sha) %> new <%= pluralize(commitsSinceSha(sha), "commit", "commits") %>)
             </a>

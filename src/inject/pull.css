@@ -91,3 +91,7 @@
 a:hover .qai-pre {
   text-decoration: underline;
 }
+
+.align-right {
+  justify-content: flex-end;
+}
