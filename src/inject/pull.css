@@ -72,6 +72,7 @@
   overflow-y: scroll;
   color: #586069;
   background-color: #f4f5f7;
+  position: relative;
 }
 
 .qai-drawer pre {
@@ -94,4 +95,16 @@ a:hover .qai-pre {
 
 .align-right {
   justify-content: flex-end;
+}
+
+.qai-fullscreen {
+  opacity: 0;
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  transition: opacity .2s;
+}
+
+.qai-drawer:hover .qai-fullscreen {
+  opacity: 1;
 }

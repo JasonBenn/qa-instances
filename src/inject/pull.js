@@ -141,6 +141,28 @@ function render() {
     $('.qai-wrapper').html(template(_.extend({}, States, Helpers, state)))
     registerListeners()
   })
+
+  renderFavicon()
+}
+
+function renderFavicon() {
+  var icon
+
+  if (state.overallState === States.Online) {
+    console.log('online')
+  } else if ((state.overallState === States.Starting) || (state.overallState === States.Stopping)) {
+    console.log('starting/stopping')
+  } else {
+    console.log('github icon')
+    icon = "https://assets-cdn.github.com/favicon.ico"
+  }
+
+  // debugger;
+
+  // <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
+  var chromeIcon = '<link rel="shortcut icon" type="image/png" sizes="16x16" href="chrome://theme/IDR_EXTENSIONS_FAVICON">'
+  $('link[rel*="icon"]').remove()
+  $('head').append(chromeIcon)
 }
 
 function logsToHTML(log) {

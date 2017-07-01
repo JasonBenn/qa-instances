@@ -3,7 +3,7 @@
 # QA Instances - Chrome Extension
 
 This extension injects assets and HTML into Github PR pages.
-The API server is [here](https://github.com/minervaproject/qa-instances-api).
+The API server is [here](https://github.com/jasonbenn/qa-instances-api).
 
 # Updating
 
