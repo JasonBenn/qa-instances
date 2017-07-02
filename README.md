@@ -8,16 +8,16 @@ This project was inspired by Heroku's [Review Apps](https://devcenter.heroku.com
 >
 > Review apps are a great way to propose, discuss and merge changes to your code base. Because pull request branches are deployed to new [instances] on Heroku, it’s very simple for you and your collaborators to test and debug code branches.
 
-QA Instances (QAI) works the same way, but for projects hosted and deployed via Amazon Web Services - specifically, OpsWorks, Route53, and RDS.
+QA Instances (QAI) works the same way, but for codebases hosted and deployed via Amazon Web Services - specifically, OpsWorks, Route53, and RDS.
 
 One difference between the two projects is that QAI will additionally copy and sanitize production data for each new instance. This way, users are able to log in with their actual credentials and experiment freely with the instance, as if they were logged in to the real app.
 
-We use this project at the [Minerva Project](https://www.minerva.kgi.edu/) to:
-- catch defects before they're pushed to production,
-- keep PMs abreast of progress on feature development,
-- regularly exercise the deployment pipeline,
-- allow designers to deploy their changes without engineering assistance,
-- and reduce the time between iterations on new features.
+We use this tool at the [Minerva Project](https://www.minerva.kgi.edu/) to:
+- 🍀 catch defects before they're pushed to production,
+- ✨ keep PMs abreast of progress on feature development,
+- 💪 regularly exercise the deployment pipeline,
+- 🙌 allow designers to deploy their changes without engineering assistance,
+- 🚀 and reduce the time between iterations on new features.
 
 ## A tour of features
 
