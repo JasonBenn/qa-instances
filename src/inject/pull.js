@@ -27,12 +27,13 @@ var initialUIState = {
   deployInstanceError: "",
   route53Error: "",
   startInstanceError: "",
-  serviceInstanceError: ""
+  serviceInstanceError: "",
+
+  deployInstanceLog: [],
+  serviceInstanceLog: []
 }
 
 var state = _.clone(initialUIState)
-
-console.log('ps: connecting to', BASE_URL);
 var socket = io.connect(BASE_URL);
 
 function getPrId() {
@@ -60,11 +61,11 @@ function listenForClickDestroy() {
   })
 }
 
-function listenForClickCreate() { 
+function listenForClickCreate() {
   $("#qai-create").click(function() {
     state.loading = true
     render()
-    ajaxPost(BASE_URL + "/pulls/", { 
+    ajaxPost(BASE_URL + "/pulls/", {
       prId: getPrId(),
       prName: getPrName(),
       sha: getLatestSha()
@@ -79,7 +80,7 @@ function listenForClickUpdateDB() {
   $('#qai-update-db').click(function() {
     state.loading = true
     render()
-    ajaxPost(BASE_URL + "/pulls/updateDB", { 
+    ajaxPost(BASE_URL + "/pulls/updateDB", {
       prId: getPrId(),
     }).done(function(response) {
       state.loading = false
@@ -92,7 +93,7 @@ function listenForClickRedeploy() {
   $("#qai-redeploy").click(function() {
     state.loading = true
     render()
-    ajaxPost(BASE_URL + "/pulls/redeploy", { 
+    ajaxPost(BASE_URL + "/pulls/redeploy", {
       prId: getPrId(),
       sha: getLatestSha()
     }).done(function(response) {
@@ -100,19 +101,6 @@ function listenForClickRedeploy() {
       render()
     })
   })
-}
-
-function maybeRequestFailedLog() {
-  if (state.deployInstanceState === States.Error
-    || state.deployInstanceState === States.Starting
-    || state.serviceInstanceState === States.Error
-    || state.serviceInstanceState === States.Stopping) {
-    ajaxPost(BASE_URL + "/pulls/logs", {
-      prId: getPrId()
-    }).done(function(message) {
-      if (message.data) appendLogUpdate(message.data)
-    })
-  }
 }
 
 function registerListeners() {
@@ -141,51 +129,17 @@ function render() {
     $('.qai-wrapper').html(template(_.extend({}, States, Helpers, state)))
     registerListeners()
   })
-
-  renderFavicon()
-}
-
-function renderFavicon() {
-  var icon
-
-  if (state.overallState === States.Online) {
-    console.log('online')
-  } else if ((state.overallState === States.Starting) || (state.overallState === States.Stopping)) {
-    console.log('starting/stopping')
-  } else {
-    console.log('github icon')
-    icon = "https://assets-cdn.github.com/favicon.ico"
-  }
-
-  // debugger;
-
-  // <link rel="icon" type="image/x-icon" href="https://assets-cdn.github.com/favicon.ico">
-  var chromeIcon = '<link rel="shortcut icon" type="image/png" sizes="16x16" href="chrome://theme/IDR_EXTENSIONS_FAVICON">'
-  $('link[rel*="icon"]').remove()
-  $('head').append(chromeIcon)
-}
-
-function logsToHTML(log) {
-  return log.split('\n').map(function(line) {
-    return "<pre>" + line + "</pre>"
-  }).join("")
-}
-
-function appendLogUpdate(message) {
-  var $logsContainer
-  if (message.deployInstanceLog) {
-    $logsContainer = $('#deployInstanceLogs')
-    $logsContainer.append(logsToHTML(message.deployInstanceLog))
-  } else if (message.serviceInstanceLog) {
-    $logsContainer = $('#serviceInstanceLogs')
-    $logsContainer.append(logsToHTML(message.serviceInstanceLog))
-  }
-  $logsContainer[0].scrollTop += 100000  // scroll to the bottom
 }
 
 function updateStateAndRender(prData) {
-  // Filter out any key/value pairs with undefined values.
-  var stateUpdates = _.omit(prData, _.isUndefined)
+  var logTypes = ["deployInstanceLog", "serviceInstanceLog"]
+  logTypes.forEach(function(logType) {
+    if (prData[logType]) {
+      state[logType] = state[logType].concat(prData[logType].split("\n"))
+    }
+  })
+
+  var stateUpdates = _.omit(_.omit(prData, _.isUndefined), logTypes); // Filter out any key/value pairs with undefined values.
   _.extend(state, stateUpdates)
   render()
 }
@@ -205,22 +159,16 @@ chrome.extension.sendMessage({}, function(response) {
         }
       })
 
+
       $.when(prStatusPromise, wrapperPromise).done(function(prStatus, _) {
         updateStateAndRender(prStatus[0].data)
-        maybeRequestFailedLog()
       })
 
       socket.on('picasso/pull/' + getPrId(), function(message) {
         var parsedMessage = JSON.parse(message)
-        if (parsedMessage.deployInstanceLog || parsedMessage.serviceInstanceLog) {
-          appendLogUpdate(parsedMessage)
-        } else {
-          console.log('ps:', message)
-          updateStateAndRender(parsedMessage)
-        }
+        updateStateAndRender(parsedMessage)
       })
 
-      console.log('ps: listening on channel "picasso/pull/' + getPrId() + '"');
   	}
 	}, 10);
 });
