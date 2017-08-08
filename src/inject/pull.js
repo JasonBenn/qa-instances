@@ -103,11 +103,27 @@ function listenForClickRedeploy() {
   })
 }
 
+function quitOnEscape(e) {
+  console.log('quitOnEscape')
+  if (e.which === 27) {
+    $('body').removeClass("qai-fullscreen")
+    $(window).off('keyup', quitOnEscape)
+  }
+}
+
+function listenForClickFullscreen() {
+  $('.qai-fullscreen').click(function() {
+    $('body').toggle("qai-fullscreen")
+    $(window).on('keyup', quitOnEscape)
+  })
+}
+
 function registerListeners() {
   listenForClickDestroy()
   listenForClickUpdateDB()
   listenForClickRedeploy()
   listenForClickCreate()
+  listenForClickFullscreen()
 }
 
 function render() {
@@ -134,7 +150,7 @@ function render() {
 function updateStateAndRender(prData) {
   var logTypes = ["deployInstanceLog", "serviceInstanceLog"]
   logTypes.forEach(function(logType) {
-    if (prData[logType]) {
+    if (prData && prData[logType]) {
       state[logType] = state[logType].concat(prData[logType].split("\n"))
     }
   })
@@ -161,6 +177,7 @@ chrome.extension.sendMessage({}, function(response) {
 
 
       $.when(prStatusPromise, wrapperPromise).done(function(prStatus, _) {
+        console.log(prStatus[0].data)
         updateStateAndRender(prStatus[0].data)
       })
 
