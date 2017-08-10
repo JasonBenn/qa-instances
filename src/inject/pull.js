@@ -43,7 +43,7 @@ function getPrId() {
 }
 
 function getPrName() {
-  return $('.commit-ref').last().attr('title').split(':').slice(1).join(':')
+  return $('.commit-ref').eq(1).attr('title').split(':').slice(1).join(':')
 }
 
 function getLatestSha() {
