@@ -134,7 +134,7 @@ function render() {
 function updateStateAndRender(prData) {
   var logTypes = ["deployInstanceLog", "serviceInstanceLog"]
   logTypes.forEach(function(logType) {
-    if (prData[logType]) {
+    if (prData && prData[logType]) {
       state[logType] = state[logType].concat(prData[logType].split("\n"))
     }
   })
