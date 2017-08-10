@@ -131,6 +131,10 @@ function render() {
   })
 }
 
+function scrollLogContainers() {
+  $('.qai-drawer').each(function(i, drawer) { drawer.scrollTop += 10000 })
+}
+
 function updateStateAndRender(prData) {
   var logTypes = ["deployInstanceLog", "serviceInstanceLog"]
   logTypes.forEach(function(logType) {
@@ -142,6 +146,7 @@ function updateStateAndRender(prData) {
   var stateUpdates = _.omit(_.omit(prData, _.isUndefined), logTypes); // Filter out any key/value pairs with undefined values.
   _.extend(state, stateUpdates)
   render()
+  scrollLogContainers()
 }
 
 chrome.extension.sendMessage({}, function(response) {
